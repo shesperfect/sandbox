@@ -6,6 +6,7 @@ interface CanvasProps {
     antialias: boolean,
   },
   onLoad: (gl: RenderingContext | null) => void,
+  onRender: (gl: RenderingContext) => void,
 }
 
 export class Canvas extends React.Component<CanvasProps, any> {
@@ -18,6 +19,7 @@ export class Canvas extends React.Component<CanvasProps, any> {
       antialias: true,
     },
     onLoad: () => {},
+    onRender: () => {},
   };
 
   componentDidMount() {
@@ -25,6 +27,12 @@ export class Canvas extends React.Component<CanvasProps, any> {
 
     this.gl = this.canvasRef.current?.getContext(context, options) || null;
     this.props.onLoad(this.gl);
+
+    window.addEventListener('resize', () =>
+      this.gl.viewport(0, 0,
+        this.canvasRef.current?.offsetWidth,
+        this.canvasRef.current?.offsetHeight));
+
     this.animate();
   }
 
@@ -38,6 +46,8 @@ export class Canvas extends React.Component<CanvasProps, any> {
 
   private animate() {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+    this.props.onRender(this.gl);
 
     requestAnimationFrame(this.animate.bind(this));
   }

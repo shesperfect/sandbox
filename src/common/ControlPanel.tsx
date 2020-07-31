@@ -8,7 +8,7 @@ export function ControlPanel() {
       <div className="form-check">
         <label className="form-check-label">
           <input type="radio" className="form-check-input" name="optionsRadios"
-                 id="optionsRadios1" value="option1" checked />
+                 id="optionsRadios1" value="option1" defaultChecked />
           Option 1
         </label>
       </div>
@@ -21,7 +21,7 @@ export function ControlPanel() {
       </div>
       <div className="form-check">
         <label className="form-check-label">
-          <input className="form-check-input" type="checkbox" value="" checked />
+          <input className="form-check-input" type="checkbox" value="" defaultChecked />
           Option one
         </label>
       </div>

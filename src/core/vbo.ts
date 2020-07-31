@@ -1,15 +1,14 @@
 export class VBO {
-  descriptor: any;
+  descriptor: WebGLBuffer | null = null;
 
-  // bind(gl) {
-  //   if (!this.descriptor) this.descriptor = gl.createBuffer();
-  //   gl.bindBuffer(gl.ARRAY_BUFFER, this.descriptor);
-  //
-  //   return this;
-  // }
-  //
-  // set(gl, data) {
-  //   this.buffer = data;
-  //   gl.bufferData(gl.ARRAY_BUFFER, this.buffer, gl.STATIC_DRAW);
-  // }
+  bind(gl: any) {
+    if (!this.descriptor) this.descriptor = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.descriptor);
+
+    return this;
+  }
+
+  set(gl: any, data: Float32Array) {
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+  }
 }
