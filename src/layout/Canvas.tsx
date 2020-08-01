@@ -28,11 +28,9 @@ export class Canvas extends React.Component<CanvasProps, any> {
     this.gl = this.canvasRef.current?.getContext(context, options) || null;
     this.props.onLoad(this.gl);
 
-    window.addEventListener('resize', () =>
-      this.gl.viewport(0, 0,
-        this.canvasRef.current?.offsetWidth,
-        this.canvasRef.current?.offsetHeight));
+    window.addEventListener('resize', this.setViewport.bind(this));
 
+    this.setViewport();
     this.animate();
   }
 
@@ -42,6 +40,17 @@ export class Canvas extends React.Component<CanvasProps, any> {
         <canvas ref={ this.canvasRef } />
       </div>
     );
+  }
+
+  private setViewport() {
+    if (this.canvasRef.current) {
+      this.canvasRef.current.width = this.canvasRef.current?.offsetWidth;
+      this.canvasRef.current.height = this.canvasRef.current?.offsetHeight;
+    }
+
+    this.gl.viewport(0, 0,
+      this.canvasRef.current?.offsetWidth,
+      this.canvasRef.current?.offsetHeight);
   }
 
   private animate() {
