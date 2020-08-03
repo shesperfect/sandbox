@@ -7,6 +7,7 @@ interface CanvasProps {
   },
   onLoad: (gl: RenderingContext | null) => void,
   onRender: (gl: RenderingContext) => void,
+  onResize: (width: number, height: number) => void,
 }
 
 export class Canvas extends React.Component<CanvasProps, any> {
@@ -20,6 +21,7 @@ export class Canvas extends React.Component<CanvasProps, any> {
     },
     onLoad: () => {},
     onRender: () => {},
+    onResize: () => {},
   };
 
   componentDidMount() {
@@ -44,13 +46,16 @@ export class Canvas extends React.Component<CanvasProps, any> {
 
   private setViewport() {
     if (this.canvasRef.current) {
-      this.canvasRef.current.width = this.canvasRef.current?.offsetWidth;
-      this.canvasRef.current.height = this.canvasRef.current?.offsetHeight;
-    }
+      const width = this.canvasRef.current.offsetWidth;
+      const height = this.canvasRef.current.offsetHeight;
 
-    this.gl.viewport(0, 0,
-      this.canvasRef.current?.offsetWidth,
-      this.canvasRef.current?.offsetHeight);
+      this.canvasRef.current.width = width;
+      this.canvasRef.current.height = height;
+
+      this.gl.viewport(0, 0, width, height);
+
+      this.props.onResize(width, height);
+    }
   }
 
   private animate() {

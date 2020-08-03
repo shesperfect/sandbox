@@ -9,7 +9,7 @@ import './Snow.scss';
 
 export class SnowComponent extends BaseComponent<any, any, WebGLRenderingContext> {
   constructor(props: any) {
-    const camera = new OrthographicCamera(0, 594, 500, 0, 100, -400);
+    const camera = new OrthographicCamera(100, -400);
 
     super(props, vertexSource, fragmentSource, camera);
   }
@@ -19,14 +19,27 @@ export class SnowComponent extends BaseComponent<any, any, WebGLRenderingContext
   }
 
   protected onInit() {
-    this.vbo.set(this.gl, new Float32Array([50, 50, 1, 50, 100, 1, 100, 100, 1]));
+    this.vbo.set(this.gl, new Float32Array([150, 150, 1, 50, 100, 1, 100, 100, 1]));
 
     this.gl.clearColor(1, 1, 1, 1);
   }
 
-  protected setAttributes(program: WebGLProgram) {
-    const pos = this.gl.getAttribLocation(program, 'a_position');
+  protected onResize(canvasWidth: number, canvasHeight: number) {
+    (this.camera as OrthographicCamera).right = canvasWidth;
+    (this.camera as OrthographicCamera).bottom = canvasHeight;
+    this.camera.update();
+
+    this.setUniforms();
+  }
+
+  protected setAttributes() {
+    const pos = this.gl.getAttribLocation(this.program, 'a_position');
     this.gl.vertexAttribPointer(pos, 3, this.gl.FLOAT, false,  0, 0);
     this.gl.enableVertexAttribArray(pos);
+  }
+
+  protected setUniforms() {
+    const projection = (this.gl as any).getUniformLocation(this.program, 'u_projection');
+    (this.gl as any).uniformMatrix4fv(projection, false, this.camera.toArray());
   }
 }

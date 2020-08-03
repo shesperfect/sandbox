@@ -10,7 +10,7 @@ export class PerspectiveCamera extends Camera {
     this.update();
   }
 
-  update() {
+  protected onUpdate() {
     const f = Math.tan(Math.PI * 0.5 - 0.5 * this.fov);
     const rangeInv = 1.0 / (this.near - this.far);
 
