@@ -1,3 +1,4 @@
-export { VAO } from './vao';
-export { VBO } from './vbo';
-export { ShaderProgram } from './shader-program';
+export * from './vao';
+export * from './vbo';
+export * from './shader-program';
+export * from './math';

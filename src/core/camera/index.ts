@@ -1,5 +1,6 @@
-export { PerspectiveCamera } from './perspective';
-export { OrthographicCamera } from './ortho';
+export { Camera } from './camera';
+export { PerspectiveCamera } from './perspective.camera';
+export { OrthographicCamera } from './ortho.camera';
 
 // function getProjectionMatrix(fieldOfViewInRadians: number, aspectRatio: number, near: number, far: number) {
 //   const f = 1.0 / Math.tan(fieldOfViewInRadians / 2);

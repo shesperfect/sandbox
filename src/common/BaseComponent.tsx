@@ -1,14 +1,20 @@
 import React from 'react';
 
 import { VAO, VBO, ShaderProgram } from '@core';
+import { Camera } from '@core/camera';
+
 import { Canvas } from 'layout';
 import { ControlPanel } from 'common/ControlPanel';
 
-export abstract class BaseComponent<P, S> extends React.Component<P, S>{
+export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
+  protected gl: C;
   protected vao = new VAO();
   protected vbo = new VBO();
 
-  constructor(props: P, private vertexSource: string, private fragmentSource: string) {
+  constructor(props: P,
+              private vertexSource: string,
+              private fragmentSource: string,
+              private camera: Camera) {
     super(props);
   }
 
@@ -17,7 +23,7 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S>{
       <div className="editor">
         <div className="row">
           <div className="col-md-9 col-12">
-            <Canvas onLoad={ gl => this.init(gl) } onRender={ gl => this.draw(gl) }/>
+            <Canvas onLoad={ gl => this.init(gl) } onRender={ () => this.draw() }/>
           </div>
           <div className="col-md-3 col-12 my-md-0 my-3">
             <ControlPanel />
@@ -27,29 +33,28 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S>{
     );
   }
 
-  protected abstract onInit(gl: any): void;
-  protected abstract onRender(gl: any): void;
+  protected abstract onInit(): void;
+  protected abstract onRender(): void;
+  protected abstract setAttributes(program: WebGLProgram): void;
 
   private init(gl: any) {
     if (!gl) {
       throw new Error('Your browser doesn\'t support webgl');
     }
 
-    const program = new ShaderProgram(gl, this.vertexSource, this.fragmentSource);
+    this.gl = gl;
+
+    // TODO: Optimize
+    const sProgram = new ShaderProgram(gl, this.vertexSource, this.fragmentSource);
 
     this.vao.bind(gl);
-    this.vbo.bind(gl).set(gl, new Float32Array([50, 50, 1, 50, 100, 1, 100, 100, 1]));
+    this.vbo.bind(gl);
 
-    const pos = gl.getAttribLocation(program, 'a_position');
-    gl.vertexAttribPointer(pos, 3, gl.FLOAT, false,  0, 0);
-    gl.enableVertexAttribArray(pos);
-
-    this.onInit(gl);
+    this.setAttributes(sProgram.program);
+    this.onInit();
   }
 
-  private draw(gl: any) {
-    this.vao.bind(gl);
-
-    this.onRender(gl);
+  private draw() {
+    this.onRender();
   }
 }

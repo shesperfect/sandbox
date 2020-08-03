@@ -13,7 +13,7 @@ function createShader(gl: any, type: number, source: string) {
 }
 
 export class ShaderProgram {
-  private program: WebGLProgram | null = null;
+  program: WebGLProgram;
 
   constructor(gl: any, vertexShaderSrc: string, fragmentShaderSrc: string) {
     const program = gl.createProgram();
