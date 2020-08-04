@@ -12,7 +12,7 @@ module.exports = {
         },
         configure: function(webpackConfig) {
             const fragLoader = {
-                test: /\.(vert|frag)$/i,
+                test: /\.(vert|frag|glsl)$/i,
                 use: ['raw-loader']
             };
 

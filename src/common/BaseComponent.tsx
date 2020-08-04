@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { VAO, VBO, ShaderProgram } from '@core';
-import { Camera } from '@core/camera';
 
 import { ControlPanel } from 'common';
 
 import { Canvas } from 'layout';
 
 export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
-  protected gl: C;
+  protected gl: any;
   protected program: WebGLProgram;
   protected vao = new VAO();
   protected vbo = new VBO();
@@ -16,7 +15,7 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
   constructor(props: P,
               private vertexSource: string,
               private fragmentSource: string,
-              protected camera: Camera) {
+              protected camera: C) {
     super(props);
   }
 
@@ -35,6 +34,10 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
         </div>
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    // TODO: destroy all objects
   }
 
   protected abstract onInit(): void;
@@ -62,7 +65,7 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
   }
 
   private draw() {
-    this.camera.update();
+    (this.camera as any).update();
 
     this.onRender();
   }
