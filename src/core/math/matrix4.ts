@@ -4,10 +4,12 @@ export class Matrix4 {
   private dirty = false;
 
   /**
-   * | a | d | h | tx |
-   * | b | e | i | ty |
-   * | c | f | j | tz |
-   * | 0 | 0 | 0 |  1 |
+   *     Matrix view      |        Array view
+   * | a | d | h | tx |   |    | a  | b  | c  | 0 |
+   * | b | e | i | ty |   |    | d  | e  | f  | 0 |
+   * | c | f | j | tz |   |    | h  | i  | j  | 0 |
+   * | 0 | 0 | 0 |  1 |   |    | tx | ty | tz | 1 |
+   *                      |
    */
   constructor(
     a = 1, b = 0, c = 0,

@@ -1,12 +1,14 @@
 import { BaseComponent } from 'common';
 
+import { Scene } from '@core';
 import { OrthographicCamera } from '@core/camera';
+import { BoxGeometry } from '@core/geometries';
+import { Renderer } from '@core/renderer';
 
 import vertexSource from './vertex.glsl';
 import fragmentSource from './fragment.glsl';
 
 import './Snow.scss';
-import { ParticleSystem } from '@core/geometries';
 
 const extensions = {
   'ANGLE_instanced_arrays': {},
@@ -30,7 +32,14 @@ export class SnowComponent extends BaseComponent<any, any, OrthographicCamera> {
 
     this.gl.clearColor(1, 1, 1, 1);
 
-    const ps = new ParticleSystem();
+    const box = new BoxGeometry();
+    const scene = new Scene();
+    const camera = new OrthographicCamera(100, -400);
+
+    const renderer = new Renderer();
+    scene.add(box);
+
+    renderer.render(scene);
   }
 
   protected onResize(canvasWidth: number, canvasHeight: number) {
