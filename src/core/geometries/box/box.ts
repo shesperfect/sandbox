@@ -1,5 +1,6 @@
 import { Renderable } from '@core/renderer';
-import { BoxRenderer } from '@core/geometries';
+
+import { BoxRenderer } from './box.renderer';
 
 import { Geometry } from '../geometry';
 

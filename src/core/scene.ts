@@ -2,20 +2,21 @@ import { AbstractRenderer, RENDERABLE_METADATA } from '@core/renderer';
 import { Geometry } from '@core/geometries';
 
 export class Scene {
-  private geometries = new Map<AbstractRenderer, Geometry>();
+  geometries = new Map<AbstractRenderer, Set<Geometry>>();
 
   add(geometry: Geometry) {
-    console.log(geometry);
-    console.log(Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor));
+    const renderer = Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor);
 
-    // this.geometries.add(geometry);
+    if (!this.geometries.get(renderer)) this.geometries.set(renderer, new Set());
+
+    this.geometries.get(renderer)?.add(geometry);
   }
 
   remove(geometry: Geometry) {
-    // this.geometries.delete(geometry);
-  }
+    const renderer = Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor);
 
-  render() {
-    // this.geometries.forEach(geometry => {});
+    if (!this.geometries.get(renderer)) return;
+
+    this.geometries.get(renderer)?.delete(geometry);
   }
 }

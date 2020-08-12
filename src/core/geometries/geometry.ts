@@ -3,6 +3,12 @@ import { Matrix4 } from '@core';
 export class Geometry {
   transform = new Matrix4();
 
+  // get position(): number {}
+  // get y(): number {}
+  // get z(): number {}
+  // get width(): number {}
+  // get height(): number {}
+
   rotateX(angleInRadians: number) {
     const c = Math.cos(angleInRadians);
     const s = Math.sin(angleInRadians);
@@ -39,7 +45,7 @@ export class Geometry {
     this.transform.j = sz;
   }
 
-  translate(tx: number, ty: number, tz: number) {
+  translate(tx: number, ty: number, tz = 0) {
     this.transform.tx = tx;
     this.transform.ty = ty;
     this.transform.tz = tz;

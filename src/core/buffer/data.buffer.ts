@@ -1,4 +1,4 @@
-import { VBO } from '@core';
+// import { VBO } from '@core';
 
 export class DataBuffer {
   protected buffer: Float32Array;

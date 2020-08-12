@@ -97,11 +97,6 @@ export class Matrix4 {
     return this;
   }
 
-  /**
-   * Упрощенное умножение матрицы на переданную.
-   * @description: Результат умножения записывается как текущая матрица. Возвращает текущую матрицу.
-   * ВАЖНО: элементы нижней строки принимаются всегда как 0 0 0 1 и в умножении не участвуют.
-   */
   multiply(matrix: Matrix4): Matrix4 {
     const a11 = this.array[0]; const a12 = this.array[4]; const a13 = this.array[8]; const a14 = this.array[12];
     const a21 = this.array[1]; const a22 = this.array[5]; const a23 = this.array[9]; const a24 = this.array[13];
@@ -112,20 +107,20 @@ export class Matrix4 {
     const b21 = b[1]; const b22 = b[4]; const b23 = b[7]; const b24 = b[10];
     const b31 = b[2]; const b32 = b[5]; const b33 = b[8]; const b34 = b[11];
 
-    this.array[0] = a11 * b11 + a12 * b21 + a13 * b31;
-    this.array[4] = a11 * b12 + a12 * b22 + a13 * b32;
-    this.array[8] = a11 * b13 + a12 * b23 + a13 * b33;
-    this.array[12] = a11 * b14 + a12 * b24 + a13 * b34 + a14;
+    this.a = a11 * b11 + a12 * b21 + a13 * b31;
+    this.d = a11 * b12 + a12 * b22 + a13 * b32;
+    this.h = a11 * b13 + a12 * b23 + a13 * b33;
+    this.tx = a11 * b14 + a12 * b24 + a13 * b34 + a14;
 
-    this.array[1] = a21 * b11 + a22 * b21 + a23 * b31;
-    this.array[5] = a21 * b12 + a22 * b22 + a23 * b32;
-    this.array[9] = a21 * b13 + a22 * b23 + a23 * b33;
-    this.array[13] = a21 * b14 + a22 * b24 + a23 * b34 + a24;
+    this.b = a21 * b11 + a22 * b21 + a23 * b31;
+    this.e = a21 * b12 + a22 * b22 + a23 * b32;
+    this.i = a21 * b13 + a22 * b23 + a23 * b33;
+    this.ty = a21 * b14 + a22 * b24 + a23 * b34 + a24;
 
-    this.array[2] = a31 * b11 + a32 * b21 + a33 * b31;
-    this.array[6] = a31 * b12 + a32 * b22 + a33 * b32;
-    this.array[10] = a31 * b13 + a32 * b23 + a33 * b33;
-    this.array[14] = a31 * b14 + a32 * b24 + a33 * b34 + a34;
+    this.c = a31 * b11 + a32 * b21 + a33 * b31;
+    this.f = a31 * b12 + a32 * b22 + a33 * b32;
+    this.j = a31 * b13 + a32 * b23 + a33 * b33;
+    this.tz = a31 * b14 + a32 * b24 + a33 * b34 + a34;
 
     this.dirty = true;
 

@@ -20,6 +20,10 @@ export abstract class Camera {
     }
   };
 
+  get view(): Matrix4 {
+    return new Matrix4();
+  }
+
   protected abstract onUpdate(): void;
 }
 

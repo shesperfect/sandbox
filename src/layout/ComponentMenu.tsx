@@ -7,6 +7,8 @@ export function ComponentMenu() {
       <ul>
         <li><Link to="/snow">Snow</Link></li>
         <li><Link to="/bezier-particles">Bezier particles</Link></li>
+        <li><Link to="/perlin-flow-field">Perlin noise flow field</Link></li>
+        <li><Link to="/terrain">Simple Terrain</Link></li>
       </ul>
     </header>
   );

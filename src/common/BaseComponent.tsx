@@ -59,9 +59,9 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
     this.vao.bind(gl);
     this.vbo.bind(gl);
 
-    this.setAttributes();
-    this.setUniforms();
     this.onInit();
+    this.setAttributes();
+    // this.setUniforms();
   }
 
   private draw() {

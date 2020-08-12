@@ -8,6 +8,9 @@ export class BoxRenderer extends AbstractRenderer {
 
   add(geometry: BoxGeometry) {
     this.buffer.add(geometry.transform.toArray());
-    console.log(this.buffer);
+  }
+
+  render() {
+    console.log('hui');
   }
 }

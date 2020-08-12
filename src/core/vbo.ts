@@ -11,4 +11,9 @@ export class VBO {
   set(gl: any, data: Float32Array) {
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
   }
+
+  insert(gl: any, from: number, data: Float32Array) {
+    this.bind(gl);
+    gl.bufferSubData(gl.ARRAY_BUFFER, from, data);
+  }
 }

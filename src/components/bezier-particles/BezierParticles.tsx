@@ -1,6 +1,9 @@
 import React from 'react';
 
-export function BezierParticles() {
+/**
+ * https://pomax.github.io/bezierinfo/#introduction
+ */
+export function BezierParticlesComponent() {
   return (
     <div>Bezier hui</div>
   );
