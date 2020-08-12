@@ -30,4 +30,50 @@ export class Vector3 extends AbstractVector {
   get length(): number {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
   }
+
+  set(arg0: number | Vector3, arg1?: number, arg2?: number) {
+    if (arg0 instanceof Vector3) {
+      this.x = arg0.x;
+      this.y = arg0.y;
+      this.z = arg0.z;
+    } else {
+      this.x = arg0;
+      if (arg1) this.y = arg1;
+      if (arg2) this.z = arg2;
+    }
+
+    return this;
+  }
+
+  add(arg0: number | Vector3, arg1 = 0, arg2 = 0): this {
+    if (arg0 instanceof Vector3) {
+      this.x += arg0.x;
+      this.y += arg0.y;
+      this.z += arg0.z;
+    } else {
+      this.x += arg0;
+      this.y += arg1;
+      this.z += arg2;
+    }
+
+    return this;
+  }
+
+  subtract(arg0: number | Vector3, arg1 = 0, arg2 = 0): this {
+    if (arg0 instanceof Vector3) {
+      this.x -= arg0.x;
+      this.y -= arg0.y;
+      this.z -= arg0.z;
+    } else {
+      this.x -= arg0;
+      this.y -= arg1;
+      this.z -= arg2;
+    }
+
+    return this;
+  }
+
+  equals(v: Vector3): boolean {
+    return this.x === v.x && this.y === v.y && this.z === v.z;
+  }
 }

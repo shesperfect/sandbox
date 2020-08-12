@@ -7,7 +7,7 @@ export class BoxRenderer extends AbstractRenderer {
   private buffer = new GeometryBuffer(20, [0, 0, 1, 0, 0, 1, 1, 1]);
 
   add(geometry: BoxGeometry) {
-    this.buffer.add(geometry.transform.toArray());
+    this.buffer.add(geometry.transform.matrix.toArray());
   }
 
   render() {

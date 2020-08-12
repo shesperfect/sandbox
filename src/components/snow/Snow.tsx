@@ -35,12 +35,11 @@ export class SnowComponent extends BaseComponent<any, any, OrthographicCamera> {
     if (this.snow.length < MAX_COUNT) {
       const flake = new Flake(rand(0, this.gl.canvas.width), rand(0, this.gl.canvas.height));
       this.snow.push(flake);
-      this.buffer = this.buffer.concat(Array.from(flake.transform.toArray()));
+      this.buffer = this.buffer.concat(Array.from(flake.transform.matrix.toArray()));
       this.vbo.set(this.gl, new Float32Array(this.buffer));
     }
 
     (extensions.ANGLE_instanced_arrays as any).drawArraysInstancedANGLE(
-      // this.gl.POINTS,
       this.gl.TRIANGLE_STRIP,
       0,
       4,
@@ -52,16 +51,6 @@ export class SnowComponent extends BaseComponent<any, any, OrthographicCamera> {
     extensions.ANGLE_instanced_arrays = this.gl.getExtension('ANGLE_instanced_arrays');
 
     this.gl.clearColor(.14, .14, .14, 1);
-
-
-    // const box = new BoxGeometry();
-    // const scene = new Scene();
-    // const camera = new OrthographicCamera(10, -400);
-
-    // const renderer = new Renderer();
-    // scene.add(box);
-
-    // renderer.render(scene, camera);
   }
 
   protected onResize(canvasWidth: number, canvasHeight: number) {

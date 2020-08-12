@@ -7,6 +7,7 @@ import {
   BezierParticlesComponent,
   PerlinFlowFieldComponent,
   TerrainComponent,
+  CubeWaveComponent, Water2DComponent,
 } from '../components';
 
 export const Routes = () => {
@@ -17,6 +18,8 @@ export const Routes = () => {
       <Route path="/bezier-particles" component={ BezierParticlesComponent } />
       <Route path="/perlin-flow-field" component={ PerlinFlowFieldComponent } />
       <Route path="/terrain" component={ TerrainComponent } />
+      <Route path="/cube-wave" component={ CubeWaveComponent } />
+      <Route path="/water-2d" component={ Water2DComponent } />
     </Switch>
   );
 };

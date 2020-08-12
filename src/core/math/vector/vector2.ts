@@ -25,4 +25,44 @@ export class Vector2 extends AbstractVector {
   get length(): number {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
   }
+
+  set(arg0: number | Vector2, arg1?: number) {
+    if (arg0 instanceof Vector2) {
+      this.x = arg0.x;
+      this.y = arg0.y;
+    } else {
+      this.x = arg0;
+      if (arg1) this.y = arg1;
+    }
+
+    return this;
+  }
+
+  add(arg0: number | Vector2, arg1 = 0): this {
+    if (arg0 instanceof Vector2) {
+      this.x += arg0.x;
+      this.y += arg0.y;
+    } else {
+      this.x += arg0;
+      this.y += arg1;
+    }
+
+    return this;
+  }
+
+  subtract(arg0: number | Vector2, arg1 = 0): this {
+    if (arg0 instanceof Vector2) {
+      this.x -= arg0.x;
+      this.y -= arg0.y;
+    } else {
+      this.x -= arg0;
+      this.y -= arg1;
+    }
+
+    return this;
+  }
+
+  equals(v: Vector2): boolean {
+    return this.x === v.x && this.y === v.y;
+  }
 }
