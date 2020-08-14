@@ -1,6 +1,7 @@
+import { rand, Vector3 } from '@core';
+
 import { BaseComponent } from 'common';
 
-import { rand } from '@core';
 import { OrthographicCamera } from '@core/camera';
 
 import vertexSource from './vertex.glsl';
@@ -10,15 +11,22 @@ import { Flake } from './flake';
 
 import './Snow.scss';
 
-const MAX_COUNT = 10;
+const gravity = new Vector3(rand(), 0.03, 0);
+const intensity = 1;
+
+let elapsed = 0;
+let currentTime = performance.now();
+
 const extensions = {
   'ANGLE_instanced_arrays': {},
 };
 
+let adding = true;
+
 /**
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s
  */
-export class SnowComponent extends BaseComponent<any, any, OrthographicCamera> {
+export class Snow3DComponent extends BaseComponent<any, any, OrthographicCamera> {
   snow: Flake[];
   buffer: number[];
 
@@ -32,12 +40,24 @@ export class SnowComponent extends BaseComponent<any, any, OrthographicCamera> {
   }
 
   protected onRender() {
-    if (this.snow.length < MAX_COUNT) {
-      const flake = new Flake(rand(0, this.gl.canvas.width), rand(0, this.gl.canvas.height));
+    const now = performance.now();
+    elapsed += now - currentTime;
+    currentTime = now;
+
+    if (adding && elapsed >= 1000 * (1 - intensity)) {
+      const flake = new Flake(this.gl.canvas.width, this.gl.canvas.height);
       this.snow.push(flake);
-      this.buffer = this.buffer.concat(Array.from(flake.transform.matrix.toArray()));
-      this.vbo.set(this.gl, new Float32Array(this.buffer));
+      elapsed = 0;
     }
+
+    let arr = this.buffer;
+    for (let flake of this.snow) {
+      flake.applyForce(gravity);
+      flake.update();
+      flake.dirty && (adding = false);
+      arr = arr.concat(Array.from(flake.transform.matrix.toArray()));
+    }
+    this.vbo.set(this.gl, new Float32Array(arr));
 
     (extensions.ANGLE_instanced_arrays as any).drawArraysInstancedANGLE(
       this.gl.TRIANGLE_STRIP,

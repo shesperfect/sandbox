@@ -1,0 +1,16 @@
+canvas {
+  width: 100%;
+  height: 500px;
+  vertical-align: top;
+}
+
+.obstacle {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: red;
+  opacity: .7;
+  top: 200px;
+  left: 200px;
+  border-radius: 40px;
+}

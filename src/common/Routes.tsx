@@ -3,7 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Home } from './Home';
 import {
-  SnowComponent,
+  Snow2DComponent,
+  Snow3DComponent,
   BezierParticlesComponent,
   PerlinFlowFieldComponent,
   TerrainComponent,
@@ -14,7 +15,8 @@ export const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={ Home } />
-      <Route path="/snow" component={ SnowComponent } />
+      <Route path="/snow-2d" component={ Snow2DComponent } />
+      <Route path="/snow-3d" component={ Snow3DComponent } />
       <Route path="/bezier-particles" component={ BezierParticlesComponent } />
       <Route path="/perlin-flow-field" component={ PerlinFlowFieldComponent } />
       <Route path="/terrain" component={ TerrainComponent } />

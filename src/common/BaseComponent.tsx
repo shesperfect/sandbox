@@ -24,6 +24,7 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
       <div className="editor">
         <div className="row">
           <div className="col-md-9 col-12">
+            <div id="obstacle" className="obstacle" />
             <Canvas onLoad={ gl => this.init(gl) }
                     onRender={ () => this.draw() }
                     onResize={ (w, h) => this.onResize(w, h) } />

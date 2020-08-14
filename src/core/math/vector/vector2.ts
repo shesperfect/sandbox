@@ -4,7 +4,7 @@ import { Validate } from '../../validate.decorator';
 import { isNumber } from '../../utils';
 import { NOT_NUMBER } from '../../constants';
 
-export class Vector2 extends AbstractVector {
+export class Vector2 extends AbstractVector<Vector2> {
   protected buffer = new Float32Array(2);
 
   constructor(x = 0, y = 0) {
@@ -62,7 +62,18 @@ export class Vector2 extends AbstractVector {
     return this;
   }
 
+  multiply(multiplier: number): this {
+    this.x *= multiplier;
+    this.y *= multiplier;
+
+    return this;
+  }
+
   equals(v: Vector2): boolean {
     return this.x === v.x && this.y === v.y;
+  }
+
+  clone(): Vector2 {
+    return new Vector2(this.x, this.y);
   }
 }
