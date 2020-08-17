@@ -44,7 +44,6 @@ export class Flake extends Geometry {
   }
 
   applyObstacle(x: number, y: number, negate = false) {
-    // this.applyForce(new Vector3(x, y).subtract(this.velocity));
     negate
       ? this.applyForce(new Vector3(x, y).subtract(this.velocity))
       : this.applyForce(new Vector3(-x, y).subtract(this.velocity));
