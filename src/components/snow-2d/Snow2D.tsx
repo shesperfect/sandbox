@@ -1,4 +1,5 @@
 import { Clock, Vector3 } from '@core';
+import { Renderer } from '@core/renderer';
 
 import { BaseComponent } from 'common';
 
@@ -23,10 +24,15 @@ const clock = new Clock();
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s
  */
 export class Snow2DComponent extends React.Component<any, any> {
-  @Inject() ext: ANGLE_instanced_arrays;
+  // @Inject() ext: ANGLE_instanced_arrays;
+  // @Inject() renderer: Renderer;
 
   render() {
     return (<div>Snow 2D hui</div>);
+  }
+
+  componentDidMount(): void {
+    // console.log('renderer', this.renderer);
   }
 
   protected onRender() {
@@ -69,8 +75,6 @@ export class Snow2DComponent extends React.Component<any, any> {
   }
 
   protected onInit() {
-    console.log('extension', this.ext);
-
     // this.gl.clearColor(.14, .14, .14, 1);
     // this.gl.enable(this.gl.BLEND);
     // this.gl.blendFunc(this.gl.ONE, this.gl.ONE);

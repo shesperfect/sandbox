@@ -43,6 +43,8 @@
     ]
   },
   "devDependencies": {
+    "@jackwilsdon/craco-use-babelrc": "^1.0.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.0",
     "node-sass": "^4.14.1",
     "raw-loader": "^4.0.1",
     "react-app-rewire-alias": "^0.1.6",

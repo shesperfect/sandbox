@@ -1,0 +1,2 @@
+export const INJECT_METADATA_KEY = Symbol('INJECT_KEY');
+export const INJECTABLE_METADATA_KEY = Symbol('INJECTABLE_KEY');

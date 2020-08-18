@@ -21,4 +21,9 @@ module.exports = {
             return webpackConfig;
         }
     },
+    babel: {
+        loaderOptions: {
+            babelrc: true,
+        },
+    },
 };

@@ -961,6 +961,15 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@craco/craco@^3.2.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@craco/craco/-/craco-3.6.0.tgz#4b4ce7dacda8ac64731c18b1542f70127cd3eb8e"
+  integrity sha512-01hBd0kefkDmfOsiXq5lAnSISVPgLqT1Qrr8Y062XRboeIlz9GQvOjJxhIxoqgVFYdeKURW6xza2qOEj5Til4w==
+  dependencies:
+    cross-spawn "6.0.5"
+    lodash.mergewith "4.6.1"
+    webpack-merge "4.1.4"
+
 "@craco/craco@^5.6.4":
   version "5.6.4"
   resolved "https://registry.yarnpkg.com/@craco/craco/-/craco-5.6.4.tgz#de7a707c727864f39e6afc192fb6732c3ca45f90"
@@ -1003,6 +1012,13 @@
   resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-3.1.6.tgz#68d935fa3eae7fdd5ab0d7f953f3205d8b2bfc29"
   dependencies:
     "@hapi/hoek" "^8.3.0"
+
+"@jackwilsdon/craco-use-babelrc@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@jackwilsdon/craco-use-babelrc/-/craco-use-babelrc-1.0.0.tgz#a8e99704ca869b4388f9463533629630e4032013"
+  integrity sha512-q8Y3o7bBiAw+mlLZnoIJUm5Yzh8wIKxpM4qkuXDxFdeWM/Rio06j/zRBmBXcKJLFiCZABSWao/ymZPBRqK0o3Q==
+  dependencies:
+    "@craco/craco" "^3.2.0"
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
@@ -2095,6 +2111,13 @@ babel-plugin-transform-react-remove-prop-types@0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-remove-prop-types/-/babel-plugin-transform-react-remove-prop-types-0.4.24.tgz#f2edaf9b4c6a5fbe5c1d678bfb531078c1555f3a"
 
+babel-plugin-transform-typescript-metadata@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-typescript-metadata/-/babel-plugin-transform-typescript-metadata-0.3.0.tgz#70093ea8611baf985293fb3ec704d1b7db737ad9"
+  integrity sha512-ASYrM+bxtpfgZKsAOqQfjmLlekIDigRnNCfQBDOOdaqL18hLhZIsbdiHsuaNDTkljlqnbV/DlufaWY55jC2PBg==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+
 babel-preset-jest@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/babel-preset-jest/-/babel-preset-jest-24.9.0.tgz#192b521e2217fb1d1f67cf73f70c336650ad3cdc"
@@ -2907,6 +2930,16 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cross-spawn@6.0.5, cross-spawn@^6.0.0, cross-spawn@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
+  dependencies:
+    nice-try "^1.0.4"
+    path-key "^2.0.1"
+    semver "^5.5.0"
+    shebang-command "^1.2.0"
+    which "^1.2.9"
+
 cross-spawn@7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
@@ -2920,16 +2953,6 @@ cross-spawn@^3.0.0:
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
   dependencies:
     lru-cache "^4.0.1"
-    which "^1.2.9"
-
-cross-spawn@^6.0.0, cross-spawn@^6.0.5:
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
-  dependencies:
-    nice-try "^1.0.4"
-    path-key "^2.0.1"
-    semver "^5.5.0"
-    shebang-command "^1.2.0"
     which "^1.2.9"
 
 cross-spawn@^7.0.0:
@@ -5879,6 +5902,11 @@ lodash._reinterpolate@^3.0.0:
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+
+lodash.mergewith@4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
+  integrity sha512-eWw5r+PYICtEBgrBE5hhlT6aAa75f411bgDz/ZL2KZqYV03USvucsxcHUIlGTDTECs1eunpI7HOV7U+WLDvNdQ==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
@@ -9615,6 +9643,13 @@ webpack-manifest-plugin@2.2.0:
     lodash ">=3.5 <5"
     object.entries "^1.1.0"
     tapable "^1.0.0"
+
+webpack-merge@4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.1.4.tgz#0fde38eabf2d5fd85251c24a5a8c48f8a3f4eb7b"
+  integrity sha512-TmSe1HZKeOPey3oy1Ov2iS3guIZjWvMT2BBJDzzT5jScHTjVC3mpjJofgueEzaEd6ibhxRDD6MIblDr8tzh8iQ==
+  dependencies:
+    lodash "^4.17.5"
 
 webpack-merge@^4.2.2:
   version "4.2.2"

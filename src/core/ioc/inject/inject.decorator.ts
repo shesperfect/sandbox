@@ -1,19 +1,25 @@
-import { Token } from '../types';
+import { Token } from '@core';
+
+import { INJECT_METADATA_KEY } from './const';
 
 import 'reflect-metadata';
 
-const INJECT_METADATA_KEY = Symbol('INJECT_KEY');
+export function Inject(injectionToken?: Token<any> | Symbol | string) {
+  return function(target: any, propertyKey: string) {
+    const deps = Reflect.getMetadata(INJECT_METADATA_KEY, target) || [];
+    const token = isInjectionToken(injectionToken)
+      ? injectionToken
+      : Reflect.getMetadata('design:type', target, propertyKey);
 
-/**
- * Parameter decorator, it takes a token to map the parameter to
- */
-export function Inject(token?: Token<any>) {
-  return function(target: any, propertyKey: string | symbol) {
-    console.log(target[propertyKey]);
-    Reflect.defineMetadata(INJECT_METADATA_KEY, token, target);
+    deps.push({ propertyKey, token });
+
+    Reflect.defineMetadata(INJECT_METADATA_KEY, deps, target);
+
     return target;
   };
 }
-export function getInjectionToken(target: any, index: number) {
-  return Reflect.getMetadata(INJECT_METADATA_KEY, target, `index-${index}`) as Token<any> | undefined;
-}
+
+const isInjectionToken = (token: any): boolean =>
+  token instanceof Function
+    || typeof token === 'symbol'
+    || typeof token === 'string';
