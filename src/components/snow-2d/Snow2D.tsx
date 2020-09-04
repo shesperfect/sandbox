@@ -1,24 +1,33 @@
-import { Clock, Vector3 } from '@core';
-import { Renderer } from '@core/renderer';
-
-import { BaseComponent } from 'common';
-
-import { OrthographicCamera } from '@core/camera';
-import { BoxGeometry, ParticleSystem } from '@core/geometries';
-import { BasicMaterial } from '@core/materials';
-import { Inject, Injectable } from '@core/ioc';
-
-import flakesTextureSrc from './assets/flakes.png';
-
-import './Snow.scss';
 import React from 'react';
 
-const particles = new ParticleSystem<BoxGeometry, BasicMaterial>();
-const gui = {
-  obstacle: new Vector3(200, 200, 40),
-  intensity: 1,
-};
-const clock = new Clock();
+import { Application } from '@core/application';
+import { OrthographicCamera } from '@core/camera';
+import { Scene } from '@core';
+
+// import { Clock, Vector3 } from '@core';
+// import { Renderer } from '@core/renderer';
+//
+// import { BaseComponent } from 'common';
+//
+// import { OrthographicCamera } from '@core/camera';
+// import { BoxGeometry, ParticleSystem } from '@core/geometries';
+// import { BasicMaterial } from '@core/materials';
+// import { Inject, Injectable } from '@core/ioc';
+//
+// import flakesTextureSrc from './assets/flakes.png';
+
+import './Snow.scss';
+
+const camera = new OrthographicCamera(0, 100, 0, 100);
+const scene = new Scene();
+const app = new Application();
+
+// const particles = new ParticleSystem<BoxGeometry, BasicMaterial>();
+// const gui = {
+//   obstacle: new Vector3(200, 200, 40),
+//   intensity: 1,
+// };
+// const clock = new Clock();
 
 /**
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s
@@ -32,7 +41,7 @@ export class Snow2DComponent extends React.Component<any, any> {
   }
 
   componentDidMount(): void {
-    // console.log('renderer', this.renderer);
+    app.start();
   }
 
   protected onRender() {

@@ -6,3 +6,4 @@ export * from './scene';
 export * from './clock';
 export * from './types';
 export * from './utils';
+export * from './application';

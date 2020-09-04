@@ -14,8 +14,6 @@ export function Inject(injectionToken?: Token<any> | Symbol | string) {
     deps.push({ propertyKey, token });
 
     Reflect.defineMetadata(INJECT_METADATA_KEY, deps, target);
-
-    return target;
   };
 }
 

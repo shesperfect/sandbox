@@ -1,6 +1,9 @@
 import { Token } from '@core';
 import { Provider } from './providers';
 
+import 'reflect-metadata';
+import { INJECT_METADATA_KEY } from '@core/ioc/inject';
+
 export class Container {
   private providers = new Map<Token<any>, Provider<any>>();
 
@@ -11,12 +14,18 @@ export class Container {
   resolve<T>(token: Token<T>): T {
     const provider = this.providers.get(token);
 
-    if (!provider) throw new Error(`Cannot find a provider for given token: ${token}`);
+    if (!provider) throw new Error(`Cannot find a provider for the given token: ${token}`);
 
-    return this.providers.get(token)?.resolve();
+    return provider.resolve();
   }
 
+  inject(target: any) {
+    const deps = Reflect.getMetadata(INJECT_METADATA_KEY, target) || [];
 
+    deps.forEach(dep => {
+      target[dep.propertyKey] = this.providers.get(dep.token)?.resolve();
+    });
+  }
 
 
 
