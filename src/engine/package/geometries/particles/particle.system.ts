@@ -1,9 +1,16 @@
-import { Geometry } from '../geometry';
+import { Particle } from './particle';
+import { Entity } from '../entity';
 
-export class ParticleSystem<G, M> extends Geometry {
+export class ParticleSystem<G, M> extends Entity<G, M> {
+  private particles: Particle<G, M>[] = [];
+
   add(particle: G) {}
 
   get count(): number {
-    return 10;
+    return this.particles.length;
+  }
+
+  *[Symbol.iterator]() {
+    for (let item of this.particles) yield item;
   }
 }

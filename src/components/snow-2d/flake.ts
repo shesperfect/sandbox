@@ -1,9 +1,9 @@
-import { Geometry } from '@engine';
+import { Entity } from '@engine';
 import { rand, Vector2, Vector3 } from '@engine/core';
 
 const gravity = new Vector3(rand(), 0.003, 0);
 
-export class Flake extends Geometry {
+export class Flake extends Entity<any, any> {
   x = rand(-.5 ,.5, true);
   // x = 0;
   size = rand(10, 30);
