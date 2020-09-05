@@ -1,21 +1,22 @@
 import React from 'react';
 
-import { VAO, VBO, ShaderProgram } from '@core';
+import { Application } from '@engine';
+import { VAO, VBO, ShaderProgram } from '@engine/core';
 
 import { ControlPanel } from 'common';
 
 import { Canvas } from 'layout';
 
-export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
-  protected gl: any;
+export abstract class BaseComponent<P, S> extends React.Component<P, S>{
+  protected app: Application;
+
   protected program: WebGLProgram;
   protected vao = new VAO();
   protected vbo = new VBO();
 
   constructor(props: P,
               private vertexSource: string,
-              private fragmentSource: string,
-              protected camera: C) {
+              private fragmentSource: string) {
     super(props);
   }
 
@@ -25,8 +26,8 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
         <div className="row">
           <div className="col-md-9 col-12">
             <div id="obstacle" className="obstacle" />
-            <Canvas onLoad={ gl => this.init(gl) }
-                    onRender={ () => this.draw() }
+            <Canvas onLoad={ canvas => this.init(canvas) }
+                    onRender={ () => this.onRender() }
                     onResize={ (w, h) => this.onResize(w, h) } />
           </div>
           <div className="col-md-3 col-12 my-md-0 my-3">
@@ -47,14 +48,14 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
   protected abstract setAttributes(): void;
   protected abstract setUniforms(): void;
 
-  private init(gl: any) {
-    if (!gl) {
-      throw new Error('Your browser doesn\'t support webgl');
-    }
+  private init(canvas: HTMLCanvasElement | null) {
+    if (!canvas) throw new Error('Canvas doesn\'t exist');
 
-    this.gl = gl;
+    this.app = new Application(canvas);
 
     // TODO: Optimize
+    const gl = this.app.context;
+
     this.program = new ShaderProgram(gl, this.vertexSource, this.fragmentSource).program;
 
     this.vao.bind(gl);
@@ -62,12 +63,6 @@ export abstract class BaseComponent<P, S, C> extends React.Component<P, S>{
 
     this.onInit();
     this.setAttributes();
-    // this.setUniforms();
-  }
-
-  private draw() {
-    (this.camera as any).update();
-
-    this.onRender();
+    this.setUniforms();
   }
 }

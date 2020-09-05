@@ -8,7 +8,8 @@ module.exports = {
             'common': path.resolve(__dirname, './src/common'),
             'common/*': path.resolve(__dirname, './src/common/*'),
             "components":  path.resolve(__dirname, './src/components'),
-            '@core': path.resolve(__dirname, './src/core'),
+            '@engine/core': path.resolve(__dirname, './src/engine/core'),
+            '@engine': path.resolve(__dirname, './src/engine/package'),
         },
         configure: function(webpackConfig) {
             const fragLoader = {

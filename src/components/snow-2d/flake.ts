@@ -1,5 +1,5 @@
-import { rand, Vector2, Vector3 } from '@core';
-import { Geometry } from '@core/geometries';
+import { Geometry } from '@engine';
+import { rand, Vector2, Vector3 } from '@engine/core';
 
 const gravity = new Vector3(rand(), 0.003, 0);
 
