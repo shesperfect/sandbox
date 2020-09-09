@@ -1,46 +1,8 @@
-import { Type } from '@engine/core';
-
-import { INJECT_METADATA_KEY, INJECTABLE_METADATA_KEY } from './const';
+// import { Type } from '@engine/core';
+//
+// import { INJECTABLE_METADATA_KEY } from './const';
 
 import 'reflect-metadata';
-
-const singletonConstructors = new Map<string, Function>();
-
-//
-// Collection of all singletons objects that can be injected.
-//
-const instantiatedSingletons = new Map<string, any>();
-
-// export function instantiateSingleton<T = any>(dependencyId: string): T {
-//   try {
-//     const existingSingleton = instantiatedSingletons.get(dependencyId);
-//     if (existingSingleton) {
-//       // The singleton has previously been instantiated.
-//       return existingSingleton;
-//     }
-//
-//     const singletonConstructor = singletonConstructors.get(dependencyId);
-//     if (!singletonConstructor) {
-//       // The requested constructor was not found.
-//       const msg = "No constructor found for singleton " + dependencyId;
-//       throw new Error(msg);
-//     }
-//
-//     // Construct the singleton.
-//     const instantiatedSingleton =
-//       Reflect.construct(makeConstructorInjectable(singletonConstructor), []); // recursion
-//
-//
-//     instantiatedSingletons.set(dependencyId, instantiatedSingleton);
-//     return instantiatedSingleton;
-//   }
-//   catch (err) {
-//     console.error("Failed to instantiate singleton " + dependencyId);
-//     console.error(err && err.stack || err);
-//     throw err;
-//   }
-// }
-
 /**
  * This class decorator adds a boolean property to the class
  * metadata, marking it as 'injectable'.
@@ -98,6 +60,6 @@ export function Injectable() {
  * marked as injectable.
  * @param { Type<T> } target - target class constructor
  */
-export function isInjectable<T>(target: Type<T>): boolean {
-  return !!Reflect.getMetadata(INJECTABLE_METADATA_KEY, target);
-}
+// export function isInjectable<T>(target: Type<T>): boolean {
+//   return !!Reflect.getMetadata(INJECTABLE_METADATA_KEY, target);
+// }

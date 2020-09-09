@@ -1,22 +1,32 @@
-import { AbstractRenderer, RENDERABLE_METADATA } from '../renderer';
-import { Geometry } from '../geometries';
+import { Entity } from '../geometries';
 
 export class Scene {
-  geometries = new Map<AbstractRenderer, Set<Geometry>>();
+  // entities = new Map<Type<AbstractRenderer>, Set<Geometry>>();
+  entities = new Set<Entity>();
 
-  add(geometry: Geometry) {
-    const renderer = Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor);
+  add(entity: Entity) {
+    // const renderer = Reflect.getMetadata(RENDERABLE_METADATA, entity.constructor);
+    //
+    // if (!renderer) throw new Error(`Cannot find renderer for the given entity: ${entity.constructor.name}`);
+    //
+    // if (!this.entities.get(renderer)) this.entities.set(renderer, new Set());
+    //
+    // this.entities.get(renderer)?.add(entity);
 
-    if (!this.geometries.get(renderer)) this.geometries.set(renderer, new Set());
+    if (this.entities.has(entity)) throw new Error(`The entity you are trying to add is already added to the scene: ${entity.constructor.name}`);
 
-    this.geometries.get(renderer)?.add(geometry);
+    this.entities.add(entity);
   }
 
-  remove(geometry: Geometry) {
-    const renderer = Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor);
+  remove(entity: Entity) {
+    // const renderer = Reflect.getMetadata(RENDERABLE_METADATA, geometry.constructor);
+    //
+    // if (!this.entities.get(renderer)) return;
+    //
+    // this.entities.get(renderer)?.delete(geometry);
 
-    if (!this.geometries.get(renderer)) return;
+    if (!this.entities.has(entity)) throw new Error(`The entity you are trying to delete doesn't exist: ${entity.constructor.name}`);
 
-    this.geometries.get(renderer)?.delete(geometry);
+    this.entities.delete(entity);
   }
 }

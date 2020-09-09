@@ -82,6 +82,8 @@ export class Vector3 extends AbstractVector<Vector3> {
     this.y *= multiplier;
     this.z *= multiplier;
 
+    this.dirty = true;
+
     return this;
   }
 

@@ -1,10 +1,21 @@
 import { Particle } from './particle';
+
 import { Entity } from '../entity';
 
-export class ParticleSystem<G, M> extends Entity<G, M> {
-  private particles: Particle<G, M>[] = [];
+export class ParticleSystem extends Entity {
+  private particles: Particle[] = [];
 
-  add(particle: G) {}
+  add(particle: Particle) {
+    this.particles.push(particle);
+  }
+
+  create(): Particle {
+    const particle = new Particle(this.geometry, this.material);
+
+    this.add(particle);
+
+    return particle;
+  }
 
   get count(): number {
     return this.particles.length;

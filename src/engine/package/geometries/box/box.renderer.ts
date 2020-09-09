@@ -16,10 +16,10 @@ export class BoxRenderer extends AbstractRenderer {
   ]);
 
   add(geometry: BoxGeometry) {
-    this.buffer.add(geometry.transform.matrix.toArray());
+    // this.buffer.add(geometry.transform.matrix.toArray());
   }
 
   render() {
-    console.log('hui');
+    console.log('box renderer hui');
   }
 }

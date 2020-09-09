@@ -2,9 +2,83 @@ import { Matrix4, Vector3 } from '@engine/core';
 
 export class Transform {
   private _transform = new Matrix4();
-  private _position: Vector3 = new Vector3();
-  private _rotation: Vector3 = new Vector3();
-  private _scale: Vector3 = new Vector3();
+  private _position: Vector3 = new Proxy(new Vector3(), {
+    set: (obj, prop, value) => {
+      if (prop === 'x') {
+        this.positionTransform.tx = value;
+      }
+      if (prop === 'y') {
+        this.positionTransform.ty = value;
+      }
+      if (prop === 'z') {
+        this.positionTransform.tz = value;
+      }
+
+      obj[prop] = value;
+
+      return true;
+    }
+  });
+  private _rotation: Vector3 = new Proxy(new Vector3(), {
+    set: (obj, prop, value) => {
+      if (prop === 'x') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
+
+        this.rotationXTransform.e = c;
+        this.rotationXTransform.f = s;
+        this.rotationXTransform.i = -s;
+        this.rotationXTransform.j = c;
+      }
+
+      if (prop === 'y') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
+
+        this.rotationYTransform.a = c;
+        this.rotationYTransform.c = -s;
+        this.rotationYTransform.h = s;
+        this.rotationYTransform.j = c;
+      }
+
+      if (prop === 'z') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
+
+        this.rotationZTransform.a = c;
+        this.rotationZTransform.b = s;
+        this.rotationZTransform.d = -s;
+        this.rotationZTransform.e = c;
+      }
+
+      obj[prop] = value;
+
+      return true;
+    }
+  });
+  private _scale: Vector3 = new Proxy(new Vector3(1, 1, 1), {
+    set: (obj, prop, value) => {
+      if (prop === 'x') {
+        this.scaleTransform.a = value;
+      }
+      if (prop === 'y') {
+        this.scaleTransform.e = value;
+      }
+      if (prop === 'z') {
+        this.scaleTransform.j = value;
+      }
+
+      obj[prop] = value;
+
+      return true;
+    }
+  });
+
+  private positionTransform = new Matrix4();
+  private rotationXTransform = new Matrix4();
+  private rotationYTransform = new Matrix4();
+  private rotationZTransform = new Matrix4();
+  private scaleTransform = new Matrix4();
 
   get matrix(): Matrix4 {
     this.update();
@@ -14,6 +88,11 @@ export class Transform {
   get position() { return this._position; }
   set position(position: Vector3) {
     if (this._position.equals(position)) return;
+
+    this.positionTransform.tx = position.x;
+    this.positionTransform.ty = position.y;
+    this.positionTransform.tz = position.z;
+
     this._position.set(position);
   }
 
@@ -26,54 +105,21 @@ export class Transform {
   get scale() { return this._scale; }
   set scale(scale: Vector3) {
     if (this._scale.equals(scale)) return;
+
+    this.scaleTransform.a = scale.x;
+    this.scaleTransform.e = scale.y;
+    this.scaleTransform.j = scale.z;
+
     this._scale.set(scale);
   }
 
   private update() {
-    if (this._position.dirty) {
-      this._transform.tx = this._position.x;
-      this._transform.ty = this._position.y;
-      this._transform.tz = this._position.z;
-
-      this._position.dirty = false;
-    }
-
-    if (this._rotation.dirty) {
-      // rotateX(angleInRadians: number) {
-      //   const c = Math.cos(angleInRadians);
-      //   const s = Math.sin(angleInRadians);
-      //
-      //   this.transform.e = c;
-      //   this.transform.f = s;
-      //   this.transform.i = -s;
-      //   this.transform.j = c;
-      // }
-      //
-      // rotateY(angleInRadians: number) {
-      //   const c = Math.cos(angleInRadians);
-      //   const s = Math.sin(angleInRadians);
-      //
-      //   this.transform.a = c;
-      //   this.transform.c = -s;
-      //   this.transform.h = s;
-      //   this.transform.j = c;
-      // }
-      //
-      // rotateZ(angleInRadians: number) {
-      //   const c = Math.cos(angleInRadians);
-      //   const s = Math.sin(angleInRadians);
-      //
-      //   this.transform.a = c;
-      //   this.transform.b = s;
-      //   this.transform.d = -s;
-      //   this.transform.e = c;
-      // }
-    }
-
-    if (this._scale.dirty) {
-      this._transform.a = this._scale.x;
-      this._transform.e = this._scale.y;
-      this._transform.j = this._scale.z;
-    }
+    this._transform
+      .identity()
+      .multiply(this.positionTransform)
+      .multiply(this.rotationXTransform)
+      .multiply(this.rotationYTransform)
+      .multiply(this.rotationZTransform)
+      .multiply(this.scaleTransform);
   }
 }

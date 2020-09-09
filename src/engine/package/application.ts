@@ -2,6 +2,7 @@ import { ClassProvider, Container, Inject, ValueProvider } from '@engine/core';
 import { Renderer } from './renderer';
 import { Camera } from './camera';
 import { Scene } from './scene';
+import { Entity } from './geometries';
 import { ExtensionSystem } from './extension';
 
 export class Application {
@@ -38,5 +39,9 @@ export class Application {
     return this._canvas;
   }
 
-  render(camera: Camera, scene: Scene) {}
+  render(camera: Camera, scene: Scene) {
+    scene.entities.forEach((entity: Entity) => {
+      entity.render();
+    });
+  }
 }

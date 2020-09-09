@@ -2,12 +2,14 @@ import { rand, Vector3, Vector3H } from '@engine/core';
 
 import { Entity } from '../entity';
 
-export class Particle<G, M> extends Entity<G, M> {
+export class Particle extends Entity {
   velocity = new Vector3H();
   acceleration = new Vector3();
 
   applyForce(force: Vector3) {
     this.acceleration.add(force.clone());
+
+    return this;
   }
 
   update() {

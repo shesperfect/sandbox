@@ -1,4 +1,6 @@
 export class Matrix4 {
+  static temp = new Matrix4();
+
   private array = new Float32Array(16);
 
   private dirty = false;
@@ -33,6 +35,10 @@ export class Matrix4 {
     this.array[13] = ty;
     this.array[14] = tz;
     this.array[15] = 1;
+  }
+
+  set(matrix: Matrix4): Matrix4 {
+    return this.fromArray(matrix.toArray());
   }
 
   get a(): number { return this.array[0]; }
@@ -97,30 +103,25 @@ export class Matrix4 {
     return this;
   }
 
-  multiply(matrix: Matrix4): Matrix4 {
-    const a11 = this.array[0]; const a12 = this.array[4]; const a13 = this.array[8]; const a14 = this.array[12];
-    const a21 = this.array[1]; const a22 = this.array[5]; const a23 = this.array[9]; const a24 = this.array[13];
-    const a31 = this.array[2]; const a32 = this.array[6]; const a33 = this.array[10]; const a34 = this.array[14];
+  multiply(mB: Matrix4): Matrix4 {
+    const mA = this;
 
-    const b = matrix.toArray();
-    const b11 = b[0]; const b12 = b[3]; const b13 = b[6]; const b14 = b[9];
-    const b21 = b[1]; const b22 = b[4]; const b23 = b[7]; const b24 = b[10];
-    const b31 = b[2]; const b32 = b[5]; const b33 = b[8]; const b34 = b[11];
+    const a = mA.a * mB.a + mA.d * mB.b + mA.h * mB.c;
+    const d = mA.a * mB.d + mA.d * mB.e + mA.h * mB.f;
+    const h = mA.a * mB.h + mA.d * mB.i + mA.h * mB.j;
+    const tx = mA.a * mB.tx + mA.d * mB.ty + mA.h * mB.tz + mA.tx;
 
-    this.a = a11 * b11 + a12 * b21 + a13 * b31;
-    this.d = a11 * b12 + a12 * b22 + a13 * b32;
-    this.h = a11 * b13 + a12 * b23 + a13 * b33;
-    this.tx = a11 * b14 + a12 * b24 + a13 * b34 + a14;
+    const b = mA.b * mB.a + mA.e * mB.b + mA.i * mB.c;
+    const e = mA.b * mB.d + mA.e * mB.e + mA.i * mB.f;
+    const i = mA.b * mB.h + mA.e * mB.i + mA.i * mB.j;
+    const ty = mA.b * mB.tx + mA.e * mB.ty + mA.i * mB.tz + mA.ty;
 
-    this.b = a21 * b11 + a22 * b21 + a23 * b31;
-    this.e = a21 * b12 + a22 * b22 + a23 * b32;
-    this.i = a21 * b13 + a22 * b23 + a23 * b33;
-    this.ty = a21 * b14 + a22 * b24 + a23 * b34 + a24;
+    const c = mA.c * mB.a + mA.f * mB.b + mA.j * mB.c;
+    const f = mA.c * mB.d + mA.f * mB.e + mA.j * mB.f;
+    const j = mA.c * mB.h + mA.f * mB.i + mA.j * mB.j;
+    const tz = mA.c * mB.tx + mA.f * mB.ty + mA.j * mB.tz + mA.tz;
 
-    this.c = a31 * b11 + a32 * b21 + a33 * b31;
-    this.f = a31 * b12 + a32 * b22 + a33 * b32;
-    this.j = a31 * b13 + a32 * b23 + a33 * b33;
-    this.tz = a31 * b14 + a32 * b24 + a33 * b34 + a34;
+    [this.a, this.d, this.h, this.tx, this.b, this.e, this.i, this.ty, this.c, this.f, this.j, this.tz] = [a, d, h, tx, b, e, i, ty, c, f, j, tz];
 
     this.dirty = true;
 

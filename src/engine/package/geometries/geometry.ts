@@ -1,5 +1,1 @@
-import { Transform } from './transform';
-
-export class Geometry {
-  transform = new Transform();
-}
+export class Geometry {}

@@ -3,7 +3,7 @@ import { Camera } from './camera';
 export class OrthographicCamera extends Camera {
   constructor(private near: number, private far: number,
               private _left = 0, private _right = 1,
-              private _bottom = 0, private _top = 0) {
+              private _top = 0, private _bottom = 1) {
     super();
 
     this.update();
