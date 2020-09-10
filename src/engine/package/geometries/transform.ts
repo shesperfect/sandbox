@@ -25,10 +25,10 @@ export class Transform {
         const c = Math.cos(value);
         const s = Math.sin(value);
 
-        this.rotationXTransform.e = c;
-        this.rotationXTransform.f = s;
-        this.rotationXTransform.i = -s;
-        this.rotationXTransform.j = c;
+        this.rotationXTransform.f = c;
+        this.rotationXTransform.g = s;
+        this.rotationXTransform.j = -s;
+        this.rotationXTransform.k = c;
       }
 
       if (prop === 'y') {
@@ -37,8 +37,8 @@ export class Transform {
 
         this.rotationYTransform.a = c;
         this.rotationYTransform.c = -s;
-        this.rotationYTransform.h = s;
-        this.rotationYTransform.j = c;
+        this.rotationYTransform.i = s;
+        this.rotationYTransform.k = c;
       }
 
       if (prop === 'z') {
@@ -47,8 +47,8 @@ export class Transform {
 
         this.rotationZTransform.a = c;
         this.rotationZTransform.b = s;
-        this.rotationZTransform.d = -s;
-        this.rotationZTransform.e = c;
+        this.rotationZTransform.e = -s;
+        this.rotationZTransform.f = c;
       }
 
       obj[prop] = value;
@@ -62,10 +62,10 @@ export class Transform {
         this.scaleTransform.a = value;
       }
       if (prop === 'y') {
-        this.scaleTransform.e = value;
+        this.scaleTransform.f = value;
       }
       if (prop === 'z') {
-        this.scaleTransform.j = value;
+        this.scaleTransform.k = value;
       }
 
       obj[prop] = value;
@@ -107,8 +107,8 @@ export class Transform {
     if (this._scale.equals(scale)) return;
 
     this.scaleTransform.a = scale.x;
-    this.scaleTransform.e = scale.y;
-    this.scaleTransform.j = scale.z;
+    this.scaleTransform.f = scale.y;
+    this.scaleTransform.k = scale.z;
 
     this._scale.set(scale);
   }

@@ -35,8 +35,8 @@ export class OrthographicCamera extends Camera {
 
   protected onUpdate() {
     this._matrix.a = 2 / (this.right - this.left);
-    this._matrix.e = 2 / (this.top - this.bottom);
-    this._matrix.j = 2 / (this.near - this.far);
+    this._matrix.f = 2 / (this.top - this.bottom);
+    this._matrix.k = 2 / (this.near - this.far);
     this._matrix.tx = (this.left + this.right) / (this.left - this.right);
     this._matrix.ty = (this.bottom + this.top) / (this.bottom - this.top);
     this._matrix.tz = (this.near + this.far) / (this.near - this.far);
