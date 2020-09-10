@@ -14,8 +14,8 @@ import fragmentSource from './fragment.glsl';
 
 import './Snow.scss';
 
-const camera = new OrthographicCamera(400, -400);
-// let camera;
+// const camera = new OrthographicCamera(400, -400);
+let camera;
 // const scene = new Scene();
 // const particles = new ParticleSystem(new BoxGeometry(), new BasicMaterial());
 // const clock = new Clock();
@@ -24,8 +24,8 @@ const camera = new OrthographicCamera(400, -400);
 const cube = new Entity(new BoxGeometry(), new BasicMaterial());
 cube.transform.scale.multiply(100);
 cube.transform.position.add(200, 200);
-// cube.transform.position.x = -150;
-// cube.transform.position.z = -360;
+cube.transform.position.x = -150;
+cube.transform.position.z = -860;
 console.log(cube.transform.matrix.toArray());
 const delta = .1 * Math.PI / 180;
 
@@ -144,8 +144,8 @@ export class Snow2DComponent extends BaseComponent<any, any> {
 
   protected onInit() {
     const { width, height } = this.app.canvas;
-    // camera = new PerspectiveCamera(45, width / height, 1, -200);
-    // console.log(camera.toArray());
+    camera = new PerspectiveCamera(45, width / height, 1, -200);
+    console.log(camera.toArray());
 
     this.gl = this.app.context;
     this.ext = this.app.extensions.get('ANGLE_instanced_arrays');

@@ -15,17 +15,9 @@ export class PerspectiveCamera extends Camera {
     const rangeInv = 1.0 / (this.near - this.far);
 
     this._matrix.a = f / this.aspectRatio;
-    this._matrix.e = f;
-    // this._matrix.j = 2 / (this.near - this.far);
-    this._matrix.j = (this.near + this.far) * rangeInv;
+    this._matrix.f = f;
+    this._matrix.k = (this.near + this.far) * rangeInv;
+    this._matrix.l = -1;
     this._matrix.tz = this.near * this.far * rangeInv * 2;
-
-
-    // this._matrix.a = 2 / (this.right - this.left);
-    // this._matrix.e = 2 / (this.top - this.bottom);
-    // this._matrix.j = 2 / (this.near - this.far);
-    // this._matrix.tx = (this.left + this.right) / (this.left - this.right);
-    // this._matrix.ty = (this.bottom + this.top) / (this.bottom - this.top);
-    // this._matrix.tz = (this.near + this.far) / (this.near - this.far);
   }
 }
