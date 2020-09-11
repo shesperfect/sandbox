@@ -35,7 +35,6 @@ const a = new Matrix4(
   5,4,3,2,
   1,2,6,7,
   4,3,2,4);
-console.log(a.inverse());
 
 /**
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s

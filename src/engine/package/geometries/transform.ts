@@ -5,13 +5,13 @@ export class Transform {
   private _position: Vector3 = new Proxy(new Vector3(), {
     set: (obj, prop, value) => {
       if (prop === 'x') {
-        this.positionTransform.tx = value;
+        this.positionTransform.set(1, 4, value);
       }
       if (prop === 'y') {
-        this.positionTransform.ty = value;
+        this.positionTransform.set(2, 4, value);
       }
       if (prop === 'z') {
-        this.positionTransform.tz = value;
+        this.positionTransform.set(3, 4, value);
       }
 
       obj[prop] = value;
@@ -25,30 +25,30 @@ export class Transform {
         const c = Math.cos(value);
         const s = Math.sin(value);
 
-        this.rotationXTransform.f = c;
-        this.rotationXTransform.g = s;
-        this.rotationXTransform.j = -s;
-        this.rotationXTransform.k = c;
+        this.rotationXTransform.set(2, 2, c);
+        this.rotationXTransform.set(3, 2, s);
+        this.rotationXTransform.set(2, 3, -s);
+        this.rotationXTransform.set(3, 3, c);
       }
 
       if (prop === 'y') {
         const c = Math.cos(value);
         const s = Math.sin(value);
 
-        this.rotationYTransform.a = c;
-        this.rotationYTransform.c = -s;
-        this.rotationYTransform.i = s;
-        this.rotationYTransform.k = c;
+        this.rotationYTransform.set(1, 1, c);
+        this.rotationYTransform.set(3, 1, -s);
+        this.rotationYTransform.set(1, 3, s);
+        this.rotationYTransform.set(3, 3, c);
       }
 
       if (prop === 'z') {
         const c = Math.cos(value);
         const s = Math.sin(value);
 
-        this.rotationZTransform.a = c;
-        this.rotationZTransform.b = s;
-        this.rotationZTransform.e = -s;
-        this.rotationZTransform.f = c;
+        this.rotationZTransform.set(1, 1, c);
+        this.rotationZTransform.set(2, 1, s);
+        this.rotationZTransform.set(1, 2, -s);
+        this.rotationZTransform.set(2, 2, c);
       }
 
       obj[prop] = value;
@@ -59,13 +59,13 @@ export class Transform {
   private _scale: Vector3 = new Proxy(new Vector3(1, 1, 1), {
     set: (obj, prop, value) => {
       if (prop === 'x') {
-        this.scaleTransform.a = value;
+        this.scaleTransform.set(1, 1, value);
       }
       if (prop === 'y') {
-        this.scaleTransform.f = value;
+        this.scaleTransform.set(2, 2, value);
       }
       if (prop === 'z') {
-        this.scaleTransform.k = value;
+        this.scaleTransform.set(3, 3, value);
       }
 
       obj[prop] = value;
@@ -89,9 +89,9 @@ export class Transform {
   set position(position: Vector3) {
     if (this._position.equals(position)) return;
 
-    this.positionTransform.tx = position.x;
-    this.positionTransform.ty = position.y;
-    this.positionTransform.tz = position.z;
+    this.positionTransform.set(1, 4, position.x);
+    this.positionTransform.set(2, 4, position.y);
+    this.positionTransform.set(3, 4, position.z);
 
     this._position.set(position);
   }
@@ -106,9 +106,9 @@ export class Transform {
   set scale(scale: Vector3) {
     if (this._scale.equals(scale)) return;
 
-    this.scaleTransform.a = scale.x;
-    this.scaleTransform.f = scale.y;
-    this.scaleTransform.k = scale.z;
+    this.scaleTransform.set(1, 1, scale.x);
+    this.scaleTransform.set(2, 2, scale.y);
+    this.scaleTransform.set(3, 3, scale.z);
 
     this._scale.set(scale);
   }

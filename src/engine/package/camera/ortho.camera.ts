@@ -34,11 +34,12 @@ export class OrthographicCamera extends Camera {
   }
 
   protected onUpdate() {
-    this._matrix.a = 2 / (this.right - this.left);
-    this._matrix.f = 2 / (this.top - this.bottom);
-    this._matrix.k = 2 / (this.near - this.far);
-    this._matrix.tx = (this.left + this.right) / (this.left - this.right);
-    this._matrix.ty = (this.bottom + this.top) / (this.bottom - this.top);
-    this._matrix.tz = (this.near + this.far) / (this.near - this.far);
+    this._matrix
+      .set(1, 1, 2 / (this.right - this.left))
+      .set(2, 2, 2 / (this.top - this.bottom))
+      .set(3, 3, 2 / (this.near - this.far))
+      .set(1, 4, (this.left + this.right) / (this.left - this.right))
+      .set(2, 4, (this.bottom + this.top) / (this.bottom - this.top))
+      .set(3, 4, (this.near + this.far) / (this.near - this.far));
   }
 }
