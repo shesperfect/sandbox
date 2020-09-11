@@ -1,94 +1,50 @@
 export class Matrix4 {
-  static temp = new Matrix4();
-
   private array = new Float32Array(16);
 
   private dirty = false;
 
   /**
-   *     Matrix view      |        Array view
-   * | a | e | i | tx |   |    | a  | b  | c  | d  |
-   * | b | f | j | ty |   |    | e  | f  | g  | h  |
-   * | c | g | k | tz |   |    | i  | j  | k  | l  |
-   * | d | h | l | tw |   |    | tx | ty | tz | tw |
-   *                      |
+   *        Matrix view         |            Array view
+   * | A11 | A12 | A13 | A14    |    | A11 | A21 | A31 | A41 |
+   * | A21 | A22 | A23 | A24    |    | A12 | A22 | A32 | A42 |
+   * | A31 | A32 | A33 | A34    |    | A13 | A23 | A33 | A43 |
+   * | A41 | A42 | A43 | A44    |    | A14 | A24 | A34 | A44 |
+   *                            |
    */
   constructor(
-    a =  1, b =  0, c =  0, d =  0,
-    e =  0, f =  1, g =  0, h =  0,
-    i =  0, j =  0, k =  1, l =  0,
-    tx = 0, ty = 0, tz = 0, tw = 1,
+    a11 = 1, a21 = 0, a31 = 0, a41 = 0,
+    a12 = 0, a22 = 1, a32 = 0, a42 = 0,
+    a13 = 0, a23 = 0, a33 = 1, a43 = 0,
+    a14 = 0, a24 = 0, a34 = 0, a44 = 1,
 
   ) {
-    this.array[0] = a;
-    this.array[1] = b;
-    this.array[2] = c;
-    this.array[3] = d;
-    this.array[4] = e;
-    this.array[5] = f;
-    this.array[6] = g;
-    this.array[7] = h;
-    this.array[8] = i;
-    this.array[9] = j;
-    this.array[10] = k;
-    this.array[11] = l;
-    this.array[12] = tx;
-    this.array[13] = ty;
-    this.array[14] = tz;
-    this.array[15] = tw;
+    this.array[0] = a11;
+    this.array[1] = a21;
+    this.array[2] = a31;
+    this.array[3] = a41;
+    this.array[4] = a12;
+    this.array[5] = a22;
+    this.array[6] = a32;
+    this.array[7] = a42;
+    this.array[8] = a13;
+    this.array[9] = a23;
+    this.array[10] = a33;
+    this.array[11] = a43;
+    this.array[12] = a14;
+    this.array[13] = a24;
+    this.array[14] = a34;
+    this.array[15] = a44;
   }
 
-  set(matrix: Matrix4): Matrix4 {
-    return this.fromArray(matrix.toArray());
+  set(rowIndex: number, columnIndex: number, value: number): Matrix4 {
+    this.array[(columnIndex - 1) * 4 + rowIndex - 1] = value;
+
+    return this;
   }
 
-  get a(): number { return this.array[0]; }
-  set a(value: number) { this.array[0] = value; }
-
-  get b(): number { return this.array[1]; }
-  set b(value: number) { this.array[1] = value; }
-
-  get c(): number { return this.array[2]; }
-  set c(value: number) { this.array[2] = value; }
-
-  get d(): number { return this.array[3]; }
-  set d(value: number) { this.array[3] = value; }
-
-  get e(): number { return this.array[4]; }
-  set e(value: number) { this.array[4] = value; }
-
-  get f(): number { return this.array[5]; }
-  set f(value: number) { this.array[5] = value; }
-
-  get g(): number { return this.array[6]; }
-  set g(value: number) { this.array[6] = value; }
-
-  get h(): number { return this.array[7]; }
-  set h(value: number) { this.array[7] = value; }
-
-  get i(): number { return this.array[8]; }
-  set i(value: number) { this.array[8] = value; }
-
-  get j(): number { return this.array[9]; }
-  set j(value: number) { this.array[9] = value; }
-
-  get k(): number { return this.array[10]; }
-  set k(value: number) { this.array[10] = value; }
-
-  get l(): number { return this.array[11]; }
-  set l(value: number) { this.array[11] = value; }
-
-  get tx(): number { return this.array[12]; }
-  set tx(value: number) { this.array[12] = value; }
-
-  get ty(): number { return this.array[13]; }
-  set ty(value: number) { this.array[13] = value; }
-
-  get tz(): number { return this.array[14]; }
-  set tz(value: number) { this.array[14] = value; }
-
-  get tw(): number { return this.array[15]; }
-  set tw(value: number) { this.array[15] = value; }
+  get(rowIndex: number, columnIndex: number): number {
+    return this.array[(columnIndex - 1) * 4 + rowIndex - 1];
+  }
 
   fromArray(array: number[] | Float32Array): Matrix4 {
     if (array.length !== 16) {
@@ -105,40 +61,27 @@ export class Matrix4 {
     return this;
   }
 
-  multiply(mB: Matrix4): Matrix4 {
-    const mA = this;
+  fromMatrix(matrix: Matrix4): Matrix4 {
+    return this.fromArray(matrix.toArray());
+  }
 
-    const a = mA.a * mB.a + mA.e * mB.b + mA.i * mB.c + mA.tx * mB.d;
-    const e = mA.a * mB.e + mA.e * mB.f + mA.i * mB.g + mA.tx * mB.h;
-    const i = mA.a * mB.i + mA.e * mB.j + mA.i * mB.k + mA.tx * mB.l;
-    const tx = mA.a * mB.tx + mA.e * mB.ty + mA.i * mB.tz + mA.tx * mB.tw;
+  multiply(multiplier: Matrix4 | number): Matrix4 {
+    if (typeof multiplier === 'number') {
+      this.array.forEach((item, i, arr) => arr[i] = item * multiplier);
+    } else {
+      const arr: number[] = [];
 
-    const b = mA.b * mB.a + mA.f * mB.b + mA.j * mB.c + mA.ty * mB.d;
-    const f = mA.b * mB.e + mA.f * mB.f + mA.j * mB.g + mA.ty * mB.h;
-    const j = mA.b * mB.i + mA.f * mB.j + mA.j * mB.k + mA.ty * mB.l;
-    const ty = mA.b * mB.tx + mA.f * mB.ty + mA.j * mB.tz + mA.ty * mB.tw;
+      for (let j = 1; j <= 4; j++)
+        for (let i = 1; i <= 4; i++) {
+          let res = 0;
 
-    const c = mA.c * mB.a + mA.g * mB.b + mA.k * mB.c + mA.tz * mB.d;
-    const g = mA.c * mB.e + mA.g * mB.f + mA.k * mB.g + mA.tz * mB.h;
-    const k = mA.c * mB.i + mA.g * mB.j + mA.k * mB.k + mA.tz * mB.l;
-    const tz = mA.c * mB.tx + mA.g * mB.ty + mA.k * mB.tz + mA.tz * mB.tw;
+          for (let k = 1; k <= 4; k++) res += this.get(i, k) * multiplier.get(k, j);
 
-    const d = mA.d * mB.a + mA.h * mB.b + mA.l * mB.c + mA.tw * mB.d;
-    const h = mA.d * mB.e + mA.h * mB.f + mA.l * mB.g + mA.tw * mB.h;
-    const l = mA.d * mB.i + mA.h * mB.j + mA.l * mB.k + mA.tw * mB.l;
-    const tw = mA.d * mB.tx + mA.h * mB.ty + mA.l * mB.tz + mA.tw * mB.tw;
+          arr.push(res);
+        }
 
-    [
-      this.a, this.e, this.i, this.tx,
-      this.b, this.f, this.j, this.ty,
-      this.c, this.g, this.k, this.tz,
-      this.d, this.h, this.l, this.tw,
-    ] = [
-      a, e, i, tx,
-      b, f, j, ty,
-      c, g, k, tz,
-      d, h, l, tw,
-    ];
+      this.fromArray(arr);
+    }
 
     this.dirty = true;
 
@@ -158,22 +101,8 @@ export class Matrix4 {
    * Сбрасывает текущую матрицу до единичной.
    */
   identity(): Matrix4 {
-    this.a = 1;
-    this.b = 0;
-    this.c = 0;
-    this.d = 0;
-    this.e = 0;
-    this.f = 1;
-    this.g = 0;
-    this.h = 0;
-    this.i = 0;
-    this.j = 0;
-    this.k = 1;
-    this.l = 0;
-    this.tx = 0;
-    this.ty = 0;
-    this.tz = 0;
-    this.tw = 1;
+    for (let i = 1; i <= 4; i++)
+      for (let j = 1; j <= 4; j++) this.set(i, j, Number(i === j));
 
     this.dirty = true;
 
@@ -197,14 +126,68 @@ export class Matrix4 {
    * @param matrix - переданная матрица.
    */
   equals(matrix: Matrix4): boolean {
-    return this.a === matrix.a && this.b === matrix.b
-      && this.c === matrix.c && this.d === matrix.d
-      && this.e === matrix.e && this.f === matrix.f
-      && this.g === matrix.g && this.h === matrix.h
-      && this.i === matrix.i && this.j === matrix.j
-      && this.k === matrix.k && this.l === matrix.l
-      && this.tx === matrix.tx && this.ty === matrix.ty
-      && this.tz === matrix.tz && this.tw === matrix.tw;
+    const arr = matrix.toArray();
+
+    return !this.array.some((el, i) => el !== arr[i]);
+  }
+
+  det(): number {
+    return this.get(1, 1) * this.getMinor(1, 1) -
+      this.get(1, 2) * this.getMinor(1, 2) +
+      this.get(1, 3) * this.getMinor(1, 3) -
+      this.get(1, 4) * this.getMinor(1, 4);
+  }
+
+  /**
+   * Обращает текущую матрицу.
+   */
+  inverse(): Matrix4 {
+    const det = this.det();
+
+    if (!det) throw new Error('The matrix is degenerate. Determinant can\'t be  zero.');
+
+    return this.fromMatrix(this.getCofactor().multiply(1 / det));
+  }
+
+  /**
+   * Возвращает транспонированную сопряженную матрицу.
+   */
+  getCofactor(): Matrix4 {
+    const c = new Matrix4();
+
+    for (let i = 1; i <= 4; i++)
+      for (let j = 1; j <= 4; j++) c.set(i, j, Math.pow(-1, i + j) * this.getMinor(i, j));
+
+    return c.transpose();
+  }
+
+  /**
+   * Транспонирует текущую матрицу.
+   */
+  transpose(): Matrix4 {
+    const arr: number[] = [];
+
+    for (let i = 1; i <= 4; i++)
+      for (let j = 1; j <= 4; j++) arr.push(this.get(i, j));
+
+    this.fromArray(arr);
+
+    return this;
+  }
+
+  /**
+   * Возвращает алгеброическое дополнение.
+   */
+  getMinor(rowIndex: number, columnIndex: number): number {
+    const sub = this.array.filter((el, i) =>
+      Math.ceil((i + 1) / 4) !== columnIndex && (i) % 4 + 1 !== rowIndex);
+
+    return sub[0] * sub[4] * sub[8] +
+      sub[1] * sub[5] * sub[6] +
+      sub[3] * sub[7] * sub[2] -
+      sub[2] * sub[4] * sub[6] -
+      sub[0] * sub[5] * sub[7] -
+      sub[1] * sub[3] * sub[8];
   }
 
   /**

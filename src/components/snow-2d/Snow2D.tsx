@@ -13,6 +13,7 @@ import fragmentSource from './fragment.glsl';
 // import flakesTextureSrc from './assets/flakes.png';
 
 import './Snow.scss';
+import { Matrix4 } from '@engine/core';
 
 // const camera = new OrthographicCamera(400, -400);
 let camera;
@@ -26,8 +27,15 @@ cube.transform.scale.multiply(100);
 cube.transform.position.add(200, 200);
 cube.transform.position.x = -150;
 cube.transform.position.z = -860;
-console.log(cube.transform.matrix.toArray());
+// console.log(cube.transform.matrix.toArray());
 const delta = .1 * Math.PI / 180;
+
+const a = new Matrix4(
+  1,2,3,4,
+  5,4,3,2,
+  1,2,6,7,
+  4,3,2,4);
+console.log(a.inverse());
 
 /**
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s
@@ -145,7 +153,6 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   protected onInit() {
     const { width, height } = this.app.canvas;
     camera = new PerspectiveCamera(45, width / height, 1, -200);
-    console.log(camera.toArray());
 
     this.gl = this.app.context;
     this.ext = this.app.extensions.get('ANGLE_instanced_arrays');
