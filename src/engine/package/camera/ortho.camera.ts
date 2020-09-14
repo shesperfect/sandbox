@@ -34,7 +34,7 @@ export class OrthographicCamera extends Camera {
   }
 
   protected onUpdate() {
-    this._matrix
+    this.projectionMatrix
       .set(1, 1, 2 / (this.right - this.left))
       .set(2, 2, 2 / (this.top - this.bottom))
       .set(3, 3, 2 / (this.near - this.far))

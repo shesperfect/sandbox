@@ -13,9 +13,7 @@ import fragmentSource from './fragment.glsl';
 // import flakesTextureSrc from './assets/flakes.png';
 
 import './Snow.scss';
-import { Matrix4 } from '@engine/core';
 
-// const camera = new OrthographicCamera(400, -400);
 let camera;
 // const scene = new Scene();
 // const particles = new ParticleSystem(new BoxGeometry(), new BasicMaterial());
@@ -23,18 +21,8 @@ let camera;
 // const gravity = new Vector3(rand(), 0.003, 0);
 
 const cube = new Entity(new BoxGeometry(), new BasicMaterial());
-cube.transform.scale.multiply(100);
-cube.transform.position.add(200, 200);
-cube.transform.position.x = -150;
-cube.transform.position.z = -860;
-// console.log(cube.transform.matrix.toArray());
-const delta = .1 * Math.PI / 180;
 
-const a = new Matrix4(
-  1,2,3,4,
-  5,4,3,2,
-  1,2,6,7,
-  4,3,2,4);
+const delta = .1 * Math.PI / 180;
 
 /**
  * https://www.youtube.com/watch?v=cl-mHFCGzYk&t=1427s
@@ -43,38 +31,6 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   gl: WebGLRenderingContext;
   ext: ANGLE_instanced_arrays;
 
-  vertices = [
-    // front
-    1.0, 1.0, 1.0,    0.95, 0.43, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, 1.0,   0.95, 0.43, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, -1.0, 1.0,  0.95, 0.43, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, 1.0, 1.0,   0.95, 0.43, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    // back
-    1.0, 1.0, -1.0,    0.95, 0.53, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, -1.0,   0.95, 0.53, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, -1.0, -1.0,  0.95, 0.53, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, 1.0, -1.0,   0.95, 0.53, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    // top
-    -1.0, 1.0, -1.0,   0.95, 0.13, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, 1.0, 1.0,    0.95, 0.13, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, 1.0, 1.0,     0.95, 0.13, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, 1.0, -1.0,    0.95, 0.13, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    // left
-    -1.0, 1.0, 1.0,    0.95, 0.23, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, -1.0, 1.0,   0.95, 0.23, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, -1.0, -1.0,  0.95, 0.23, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, 1.0, -1.0,   0.95, 0.23, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    // right
-    1.0, 1.0, 1.0,    0.95, 0.33, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, 1.0,   0.95, 0.33, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, -1.0,  0.95, 0.33, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, 1.0, -1.0,   0.95, 0.33, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    // bottom
-    -1.0, -1.0, -1.0,  0.95, 0.63, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    -1.0, -1.0, 1.0,   0.95, 0.63, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, 1.0,    0.95, 0.63, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-    1.0, -1.0, -1.0,   0.95, 0.63, 0.13, ...Array.from(cube.transform.matrix.toArray()),
-  ];
   indices = [
     // top
     0, 1, 2,
@@ -142,16 +98,15 @@ export class Snow2DComponent extends BaseComponent<any, any> {
 
     this.vbo.set(this.gl, new Float32Array(vertices));
 
-    // this.gl.drawElements(this.gl.TRIANGLES, 2, this.gl.UNSIGNED_SHORT, 0);
-    // this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-    // this.ext.drawArraysInstancedANGLE(this.gl.TRIANGLE_STRIP, 0, 4, 1);
     this.gl.drawElements(this.gl.TRIANGLES, this.indices.length, this.gl.UNSIGNED_SHORT, 0);
-    // this.ext.drawElementsInstancedANGLE(this.gl.TRIANGLES, 36, this.gl.UNSIGNED_SHORT, 0, 1);
   }
 
   protected onInit() {
     const { width, height } = this.app.canvas;
-    camera = new PerspectiveCamera(45, width / height, 1, -200);
+    camera = new PerspectiveCamera(45, width / height, 1, 2000);
+
+    camera.position.set(0, 0, 0);
+    cube.transform.position.set(0, 0, -8);
 
     this.gl = this.app.context;
     this.ext = this.app.extensions.get('ANGLE_instanced_arrays');
@@ -222,7 +177,7 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   protected setUniforms() {
     const projection = this.gl.getUniformLocation(this.program, 'u_projection');
 
-    this.gl.uniformMatrix4fv(projection, false, camera.toArray());
+    this.gl.uniformMatrix4fv(projection, false, camera.lookAt(cube.transform.position).toArray());
   }
 
   // protected onRender() {

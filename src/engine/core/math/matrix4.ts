@@ -90,8 +90,6 @@ export class Matrix4 {
 
   /**
    * Возвращает массив значений матрицы.
-   * @description: Если transpose = true, то значения матрицы в возвращаемом массиве транспонированы.
-   * Если есть out, то значение записываются в него (новый экземпляр Float32Array не создается).
    */
   toArray(): Float32Array {
     return this.array;
@@ -123,7 +121,6 @@ export class Matrix4 {
 
   /**
    * Проверяет, равна ли текущая матрица переданной.
-   * @param matrix - переданная матрица.
    */
   equals(matrix: Matrix4): boolean {
     const arr = matrix.toArray();
@@ -131,6 +128,9 @@ export class Matrix4 {
     return !this.array.some((el, i) => el !== arr[i]);
   }
 
+  /**
+   * Возврщает определитель матрицы.
+   */
   det(): number {
     return this.get(1, 1) * this.getMinor(1, 1) -
       this.get(1, 2) * this.getMinor(1, 2) +

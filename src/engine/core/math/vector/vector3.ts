@@ -94,4 +94,12 @@ export class Vector3 extends AbstractVector<Vector3> {
   clone(): Vector3 {
     return new Vector3(this.x, this.y, this.z);
   }
+
+  cross(v: Vector3): Vector3 {
+    return new Vector3(
+      this.y * v.z - this.z * v.y,
+      this.z * v.x - this.x * v.z,
+      this.x * v.y - this.y * v.x,
+    );
+  }
 }
