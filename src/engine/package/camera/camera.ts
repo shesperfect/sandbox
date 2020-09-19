@@ -8,7 +8,19 @@ export abstract class Camera {
   protected dirty = true;
 
   get matrix(): Matrix4 {
-    return this.projectionMatrix.multiply(this.viewMatrix);
+    this.update();
+
+    return Matrix4.temp.fromMatrix(this.projectionMatrix).multiply(this.viewMatrix);
+  }
+
+  get projection(): Matrix4 {
+    this.update();
+
+    return this.projectionMatrix;
+  }
+
+  get view(): Matrix4 {
+    return this.viewMatrix;
   }
 
   toArray(): Float32Array {

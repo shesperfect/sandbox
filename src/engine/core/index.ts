@@ -9,4 +9,5 @@ export * from './validate';
 export * from './utils';
 export * from './math';
 export * from './types';
+export * from './color';
 

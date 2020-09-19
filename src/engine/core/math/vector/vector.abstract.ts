@@ -6,9 +6,10 @@ export abstract class AbstractVector<V> {
   abstract get length(): number;
   abstract set(...args: any): this;
   abstract add(...args: any): this;
-  abstract subtract(...args: any): this;
+  abstract subtract(v: V): this;
   abstract multiply(...args: any): this;
-  abstract equals(...args: any): boolean;
+  abstract equals(v: V): boolean;
+  abstract dot(v: V): number;
   abstract clone(): V;
 
   normalize(): this {
@@ -19,5 +20,9 @@ export abstract class AbstractVector<V> {
 
   toArray(): Float32Array {
     return this.buffer;
+  }
+
+  isDirty(): boolean {
+    return this.dirty;
   }
 }

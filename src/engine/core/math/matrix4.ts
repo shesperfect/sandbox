@@ -36,6 +36,8 @@ export class Matrix4 {
     this.array[15] = a44;
   }
 
+  static temp = new Matrix4();
+
   set(rowIndex: number, columnIndex: number, value: number): Matrix4 {
     this.array[(columnIndex - 1) * 4 + rowIndex - 1] = value;
 

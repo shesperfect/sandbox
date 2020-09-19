@@ -74,4 +74,12 @@ export class Vector2 extends AbstractVector<Vector2> {
   clone(): Vector2 {
     return new Vector2(this.x, this.y);
   }
+
+  dot(v: Vector2): number {
+    return this.x * v.x + this.y * v.y;
+  }
+
+  cross(v: Vector2): Vector2 {
+    return new Vector2();
+  }
 }

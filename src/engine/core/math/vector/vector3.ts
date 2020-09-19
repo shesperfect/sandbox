@@ -14,15 +14,24 @@ export class Vector3 extends AbstractVector<Vector3> {
   }
 
   @Validate(isNumber, Error(NOT_NUMBER))
-  set x(x: number) { this.buffer[0] = x; }
+  set x(x: number) {
+    this.buffer[0] = x;
+    this.dirty = true;
+  }
   get x(): number { return this.buffer[0]; }
 
   @Validate(isNumber, Error(NOT_NUMBER))
-  set y(y: number) { this.buffer[1] = y; }
+  set y(y: number) {
+    this.buffer[1] = y;
+    this.dirty = true;
+  }
   get y(): number { return this.buffer[1]; }
 
   @Validate(isNumber, Error(NOT_NUMBER))
-  set z(z: number) { this.buffer[2] = z; }
+  set z(z: number) {
+    this.buffer[2] = z;
+    this.dirty = true;
+  }
   get z(): number { return this.buffer[2]; }
 
   get length(): number {
@@ -93,6 +102,10 @@ export class Vector3 extends AbstractVector<Vector3> {
 
   clone(): Vector3 {
     return new Vector3(this.x, this.y, this.z);
+  }
+
+  dot(v: Vector3): number {
+    return this.x * v.x + this.y * v.y + this.z * v.z;
   }
 
   cross(v: Vector3): Vector3 {

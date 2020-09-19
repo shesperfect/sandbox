@@ -5,5 +5,6 @@ export * from './renderer';
 export * from './extension';
 export * from './geometries';
 export * from './materials';
+export * from './lights';
 export * from './controls';
 export * from './clock';
