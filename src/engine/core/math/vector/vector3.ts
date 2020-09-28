@@ -1,8 +1,12 @@
-import { Validate, isNumber, NOT_NUMBER } from '@engine/core';
+import { Validate, isNumber, NOT_NUMBER, EventEmitter } from '@engine/core';
 
 import { AbstractVector } from './vector.abstract';
 
 export class Vector3 extends AbstractVector<Vector3> {
+  x$ = new EventEmitter<number>();
+  y$ = new EventEmitter<number>();
+  z$ = new EventEmitter<number>();
+
   protected buffer = new Float32Array(3);
 
   constructor(x = 0, y = 0, z = 0) {
@@ -16,6 +20,7 @@ export class Vector3 extends AbstractVector<Vector3> {
   @Validate(isNumber, Error(NOT_NUMBER))
   set x(x: number) {
     this.buffer[0] = x;
+    this.x$.emit(x);
     this.dirty = true;
   }
   get x(): number { return this.buffer[0]; }
@@ -23,6 +28,7 @@ export class Vector3 extends AbstractVector<Vector3> {
   @Validate(isNumber, Error(NOT_NUMBER))
   set y(y: number) {
     this.buffer[1] = y;
+    this.y$.emit(y);
     this.dirty = true;
   }
   get y(): number { return this.buffer[1]; }
@@ -30,6 +36,7 @@ export class Vector3 extends AbstractVector<Vector3> {
   @Validate(isNumber, Error(NOT_NUMBER))
   set z(z: number) {
     this.buffer[2] = z;
+    this.z$.emit(z);
     this.dirty = true;
   }
   get z(): number { return this.buffer[2]; }

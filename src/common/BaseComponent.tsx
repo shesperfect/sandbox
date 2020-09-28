@@ -7,7 +7,7 @@ import { ControlPanel } from 'common';
 
 import { Canvas } from 'layout';
 
-export abstract class BaseComponent<P, S> extends React.Component<P, S>{
+export abstract class BaseComponent<P, S> extends React.Component<P, S> {
   protected app: Application;
 
   protected program: WebGLProgram;

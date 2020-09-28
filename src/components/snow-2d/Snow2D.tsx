@@ -11,6 +11,8 @@ import './Snow.scss';
 
 let camera, orbitControls;
 const cube = new Entity(new BoxGeometry(), new BasicMaterial());
+const lines = new Entity(new BoxGeometry(), new BasicMaterial());
+lines.transform.scale.set(5, 5, 0);
 
 const cubeColor = [0.1, 0.1, 0.1];
 
@@ -83,27 +85,41 @@ export class Snow2DComponent extends BaseComponent<any, any> {
       1.0, -1.0, 1.0,    ...cubeColor, ...[0, -1, 0], ...Array.from(cube.transform.matrix.toArray()),
       1.0, -1.0, -1.0,   ...cubeColor, ...[0, -1, 0], ...Array.from(cube.transform.matrix.toArray()),
     ];
+    const axesVertices = [
+      0, 0, 0, ...[1, 0, 0], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+      1, 0, 0, ...[1, 0, 0], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+      0, 0, 0, ...[0, 1, 0], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+      0, 1, 0, ...[0, 1, 0], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+      0, 0, 0, ...[0, 0, 1], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+      0, 0, 1, ...[0, 0, 1], ...[0, 0, 0], ...Array.from(lines.transform.matrix.toArray()),
+    ];
 
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
     this.vbo.set(this.gl, new Float32Array(cubeVertices));
     this.gl.drawElements(this.gl.TRIANGLES, this.indices.length, this.gl.UNSIGNED_SHORT, 0);
+
+    this.vbo.set(this.gl, new Float32Array(axesVertices));
+    this.gl.drawArrays(this.gl.LINES, 0, 6)
   }
 
   protected onInit() {
     const { width, height } = this.app.canvas;
 
     camera = new PerspectiveCamera(45, width / height, 1, 2000);
-    orbitControls = new OrbitControls(this.app.canvas, camera, { keyboard: true });
+    camera.transform.position.set(0, 0, 8);
+    camera.lookAt();
 
-    camera.position.set(0, 0, 0.01);
-    cube.transform.position.set(0, 0, -8);
+    orbitControls = new OrbitControls(this.app.canvas, camera, { keyboard: true, delta: 11 });
+
+    cube.transform.position.set(0, 0, -1);
 
     this.gl = this.app.context;
     this.ext = this.app.extensions.get('ANGLE_instanced_arrays');
 
     this.gl.viewport(0, 0, width, height);
-    this.gl.clearColor(.14, .14, .14, 1);
+    // this.gl.clearColor(.14, .14, .14, 1);
+    this.gl.clearColor(.4, .4, .4, 1);
     this.gl.enable(this.gl.DEPTH_TEST);
 
     const boxIndexBufferObject = this.gl.createBuffer();
@@ -148,6 +164,6 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   protected setUniforms() {
     const projection = this.gl.getUniformLocation(this.program, 'u_projection');
 
-    this.gl.uniformMatrix4fv(projection, false, camera.lookAt(cube.transform.position).toArray());
+    this.gl.uniformMatrix4fv(projection, false, camera.matrix.toArray());
   }
 }

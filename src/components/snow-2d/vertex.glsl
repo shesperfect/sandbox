@@ -24,17 +24,17 @@ void main() {
 //    vec3 ambientLight = vec3(0.3, 0.3, 0.3);
 //    light += ambientLight;
 //
-//    // directional light
-//    vec3 directionalLightColor = vec3(1, 1, 1);
-//    vec3 directionalLightDirection = normalize(vec3(0., 0., .5));
-//    light += dot(mat3(a_model) * a_normal, directionalLightDirection) * directionalLightColor;
+    // directional light
+    vec3 directionalLightColor = vec3(1, 1, 1);
+    vec3 directionalLightDirection = normalize(vec3(0., 0., 9.));
+    light += dot(mat3(a_model) * a_normal, directionalLightDirection) * directionalLightColor;
 
-    // point light
-    vec3 surfaceWorldPosition = (a_model * vec4(a_position, 1.0)).xyz;
-    vec3 pointLightColor = vec3(1, 1, 1);
-    vec3 pointLightWorldPosition = vec3(0., 0., -.1);
-    vec3 surfaceToLight = pointLightWorldPosition - surfaceWorldPosition;
-    light += dot(mat3(a_model) * a_normal, surfaceToLight) * pointLightColor;
+//    // point light
+//    vec3 surfaceWorldPosition = (a_model * vec4(a_position, 1.0)).xyz;
+//    vec3 pointLightColor = vec3(1, 1, 1);
+//    vec3 pointLightWorldPosition = vec3(11., 12., 19.);
+//    vec3 surfaceToLight = pointLightWorldPosition - surfaceWorldPosition;
+//    light += dot(mat3(a_model) * a_normal, surfaceToLight) * pointLightColor;
 
 //    v_texcoord = a_texcoord;
 //    v_position = a_position;

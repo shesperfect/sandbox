@@ -8,3 +8,4 @@ export * from './materials';
 export * from './lights';
 export * from './controls';
 export * from './clock';
+export * from './axes-helper';

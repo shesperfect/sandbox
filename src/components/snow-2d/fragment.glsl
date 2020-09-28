@@ -13,5 +13,6 @@ void main() {
 
     vec3 color = v_color;
 
-    gl_FragColor = vec4(v_color * v_light, 1.);
+//    gl_FragColor = vec4(v_color * v_light, 1.);
+    gl_FragColor = vec4(v_color, 1.);
 }

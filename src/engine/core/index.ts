@@ -1,5 +1,6 @@
 export * from './vao';
 export * from './vbo';
+export * from './transform';
 export * from './buffer';
 export * from './constants';
 export * from './event';

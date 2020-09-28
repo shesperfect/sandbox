@@ -41,6 +41,8 @@ export class Matrix4 {
   set(rowIndex: number, columnIndex: number, value: number): Matrix4 {
     this.array[(columnIndex - 1) * 4 + rowIndex - 1] = value;
 
+    this.dirty = true;
+
     return this;
   }
 
@@ -195,7 +197,11 @@ export class Matrix4 {
   /**
    * Возвращает, изменилась ли матрица.
    */
-  private isDirty(): boolean {
+  isDirty(): boolean {
     return this.dirty;
+  }
+
+  toPristine() {
+    this.dirty = false;
   }
 }

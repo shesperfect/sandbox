@@ -1,11 +1,10 @@
 import { Geometry, Material } from '@engine';
+import { Transformable } from '@engine/core';
 
-import { Transform } from './transform';
-
-export class Entity {
-  transform = new Transform();
-
-  constructor(protected geometry: Geometry, protected material: Material) {}
+export class Entity extends Transformable {
+  constructor(protected geometry: Geometry, protected material: Material) {
+    super();
+  }
 
   render() {
     console.log('hui');

@@ -8,7 +8,7 @@ export interface OrbitControlsOptions {
 
 const defaultOptions = {
   keyboard: false,
-  delta: .1,
+  delta: 1,
 };
 
 export class OrbitControls {
@@ -19,48 +19,94 @@ export class OrbitControls {
   constructor(canvas: HTMLCanvasElement, camera: Camera, options: OrbitControlsOptions) {
     const opts = { ...defaultOptions, ...options };
 
-    canvas.addEventListener('mousedown', e => {
+    const zoom = e => {
+      e.preventDefault();
+
+      camera.transform.position.z += e.deltaY * opts.delta;
+
+      e.stopPropagation();
+    };
+    const dragStart = e => {
       this.isMoving = true;
 
       this.position.set(e.offsetX, e.offsetY);
-    });
-
-    canvas.addEventListener("wheel", e => {
-      e.preventDefault();
-
-      camera.position.z -= e.deltaY * opts.delta;
-
-      e.stopPropagation();
-    });
-
-    canvas.addEventListener('mousemove', e => {
+    };
+    const dragMove = e => {
       if (this.isMoving) {
-        camera.position.x += (e.offsetX - this.position.x) * opts.delta / 100;
-        camera.position.y -= (e.offsetY - this.position.y) * opts.delta / 100;
-      }
-    });
+        const deltaX = e.offsetX - this.position.x;
+        const deltaY = e.offsetY - this.position.y;
 
-    canvas.addEventListener('mouseup', e => {
+        move(deltaX, deltaY);
+      }
+    };
+    const dragEnd = e => {
       this.isMoving = false;
 
+      this.position.set(e.offsetX, e.offsetY);
+
       e.stopPropagation();
-    });
+    };
+    const move = (deltaXinPX: number, deltaYinPX: number) => {
+      const deltaX = deltaXinPX;
+      const deltaY = deltaYinPX;
+      const deltaPhi = deltaY * 2 * Math.PI / 360;
+      // const deltaPhi = .1;
+      const deltaTheta = deltaX * 2 * Math.PI / 360;
+      // const deltaTheta = 0;
+      const position = camera.transform.position.clone();
+      const direction = camera.transform.position.clone().subtract(camera.target);
+      const radius = direction.length;
+      console.log(position.toArray());
+      const phi = Math.atan2(position.y, position.x) + deltaPhi;
+      const theta = Math.acos(direction.z / radius) + deltaTheta;
+      const x = radius * Math.sin(theta) * Math.cos(phi);
+      const y = radius * Math.sin(theta) * Math.sin(phi);
+      const z = radius * Math.cos(theta);
+
+      // console.log('delta x', deltaX, 'delta y', deltaY);
+      // console.log('theta', theta, 'phi', phi);
+      // console.log('radius', radius, 'sin theta', Math.sin(theta), 'cos theta', Math.cos(theta), 'sin phi', Math.sin(phi), 'cos phi', Math.cos(phi));
+      // console.log(x, y, z);
+      // console.log('');
+
+      console.log( Math.atan2(position.y, position.x), Math.sin(phi), Math.cos(phi));
+
+      camera.transform.position.set(x, y, z);
+      camera.lookAt();
+    };
+
+    canvas.addEventListener('mousedown', dragStart);
+    canvas.addEventListener("wheel", zoom);
+    canvas.addEventListener('mousemove', dragMove);
+    canvas.addEventListener('mouseup', dragEnd);
+    canvas.addEventListener('mouseleave', dragEnd);
 
     opts.keyboard && document.addEventListener('keydown', e => {
+      e.preventDefault();
+
+      const rotSpeed = .1;
+      const { x, y, z } = camera.transform.position;
+
       switch(e.key) {
         case 'ArrowLeft':
-          camera.position.x -= 10 * opts.delta;
+          camera.transform.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+          camera.transform.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
           break;
         case 'ArrowRight':
-          camera.position.x += 10 * opts.delta;
+          camera.transform.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
+          camera.transform.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
           break;
         case 'ArrowUp':
-          camera.position.y -= 10 * opts.delta;
+          camera.transform.position.y = y * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+          camera.transform.position.z = z * Math.cos(rotSpeed) - y * Math.sin(rotSpeed);
           break;
         case 'ArrowDown':
-          camera.position.y += 10 * opts.delta;
+          camera.transform.position.y = y * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
+          camera.transform.position.z = z * Math.cos(rotSpeed) + y * Math.sin(rotSpeed);
           break;
       }
+
+      camera.lookAt();
     });
   }
 }

@@ -12,28 +12,24 @@ export class OrthographicCamera extends Camera {
   get left(): number { return this._left; }
   set left(value: number) {
     this._left = value;
-    this.dirty = true;
   }
 
   get right(): number { return this._right; }
   set right(value: number) {
     this._right = value;
-    this.dirty = true;
   }
 
   get bottom(): number { return this._bottom; }
   set bottom(value: number) {
     this._bottom = value;
-    this.dirty = true;
   }
 
   get top(): number { return this._top; }
   set top(value: number) {
     this._top = value;
-    this.dirty = true;
   }
 
-  protected onUpdate() {
+  protected update() {
     this.projectionMatrix
       .set(1, 1, 2 / (this.right - this.left))
       .set(2, 2, 2 / (this.top - this.bottom))
