@@ -1,25 +1,73 @@
-import { AbstractRenderer } from '@engine';
-import { GeometryBuffer } from '@engine/core';
-
-import { BoxGeometry } from './box';
+import { AbstractRenderer, Entity } from '@engine';
+import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST } from '@engine/core';
 
 export class BoxRenderer extends AbstractRenderer {
-  private buffer = new GeometryBuffer(20, [
-    0, 0, 1,
-    1, 0, 1,
-    0, 1, 1,
-    1, 1, 1,
-    0, 0, 0,
-    1, 0, 0,
-    0, 1, 0,
-    1, 1, 0,
-  ]);
+  protected vertices: number[] = [
+    -0.5, -0.5,  -0.5,
+    -0.5,  0.5,  -0.5,
+    0.5, -0.5,  -0.5,
+    -0.5,  0.5,  -0.5,
+    0.5,  0.5,  -0.5,
+    0.5, -0.5,  -0.5,
 
-  add(geometry: BoxGeometry) {
-    // this.buffer.add(geometry.transform.matrix.toArray());
+    -0.5, -0.5,   0.5,
+    0.5, -0.5,   0.5,
+    -0.5,  0.5,   0.5,
+    -0.5,  0.5,   0.5,
+    0.5, -0.5,   0.5,
+    0.5,  0.5,   0.5,
+
+    -0.5,   0.5, -0.5,
+    -0.5,   0.5,  0.5,
+    0.5,   0.5, -0.5,
+    -0.5,   0.5,  0.5,
+    0.5,   0.5,  0.5,
+    0.5,   0.5, -0.5,
+
+    -0.5,  -0.5, -0.5,
+    0.5,  -0.5, -0.5,
+    -0.5,  -0.5,  0.5,
+    -0.5,  -0.5,  0.5,
+    0.5,  -0.5, -0.5,
+    0.5,  -0.5,  0.5,
+
+    -0.5,  -0.5, -0.5,
+    -0.5,  -0.5,  0.5,
+    -0.5,   0.5, -0.5,
+    -0.5,  -0.5,  0.5,
+    -0.5,   0.5,  0.5,
+    -0.5,   0.5, -0.5,
+
+    0.5,  -0.5, -0.5,
+    0.5,   0.5, -0.5,
+    0.5,  -0.5,  0.5,
+    0.5,  -0.5,  0.5,
+    0.5,   0.5, -0.5,
+    0.5,   0.5,  0.5,
+  ];
+  protected normals: number[] = [
+    0, 0, -1,
+    0, 0, 1,
+    0, 1, 0,
+    0, -1, 0,
+    -1, 0, 0,
+    1, 0, 0,
+  ];
+
+  add(entity: Entity) {
+    if (this.entities.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
+
+    this.entities.add(entity);
+  }
+
+  remove(entity: Entity) {
+    if (!this.entities.has(entity)) throw new Error(ENTITY_DOESNT_EXIST);
+
+    this.entities.delete(entity);
   }
 
   render() {
-    console.log('box renderer hui');
+    // this.vbo.set(this.gl, new Float32Array(this.vertices));
+    this.gl.drawArrays(this.gl.TRIANGLES, 0, 36);
   }
 }

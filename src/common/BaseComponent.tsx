@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Application } from '@engine';
-import { VAO, VBO, ShaderProgram } from '@engine/core';
+import { Application, PerspectiveCamera } from '@engine';
 
 import { ControlPanel } from 'common';
 
@@ -9,16 +8,6 @@ import { Canvas } from 'layout';
 
 export abstract class BaseComponent<P, S> extends React.Component<P, S> {
   protected app: Application;
-
-  protected program: WebGLProgram;
-  protected vao = new VAO();
-  protected vbo = new VBO();
-
-  constructor(props: P,
-              private vertexSource: string,
-              private fragmentSource: string) {
-    super(props);
-  }
 
   render() {
     return (
@@ -50,15 +39,10 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S> {
   private init(canvas: HTMLCanvasElement | null) {
     if (!canvas) throw new Error('Canvas doesn\'t exist');
 
-    this.app = new Application(canvas);
-
-    // TODO: Optimize
-    const gl = this.app.context;
-
-    this.program = new ShaderProgram(gl, this.vertexSource, this.fragmentSource).program;
-
-    this.vao.bind(gl);
-    this.vbo.bind(gl);
+    this.app = new Application({
+      camera: new PerspectiveCamera(45, canvas.width / canvas.height, 1, 2000),
+      canvas,
+    });
 
     this.onInit();
     this.setAttributes();

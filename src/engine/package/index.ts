@@ -1,4 +1,4 @@
-export * from './application';
+export * from './application/application';
 export * from './camera';
 export * from './scene';
 export * from './renderer';

@@ -3,12 +3,12 @@ import { Camera } from '../camera';
 
 export interface OrbitControlsOptions {
   keyboard?: boolean,
-  delta?: number,
+  speed?: number,
 }
 
 const defaultOptions = {
   keyboard: false,
-  delta: 1,
+  speed: .1,
 };
 
 export class OrbitControls {
@@ -22,7 +22,7 @@ export class OrbitControls {
     const zoom = e => {
       e.preventDefault();
 
-      camera.transform.position.z += e.deltaY * opts.delta;
+      camera.transform.position.z += e.deltaY * opts.speed;
 
       e.stopPropagation();
     };
@@ -84,25 +84,24 @@ export class OrbitControls {
     opts.keyboard && document.addEventListener('keydown', e => {
       e.preventDefault();
 
-      const rotSpeed = .1;
       const { x, y, z } = camera.transform.position;
 
       switch(e.key) {
         case 'ArrowLeft':
-          camera.transform.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
-          camera.transform.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
+          camera.transform.position.x = x * Math.cos(opts.speed) + z * Math.sin(opts.speed);
+          camera.transform.position.z = z * Math.cos(opts.speed) - x * Math.sin(opts.speed);
           break;
         case 'ArrowRight':
-          camera.transform.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
-          camera.transform.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
+          camera.transform.position.x = x * Math.cos(opts.speed) - z * Math.sin(opts.speed);
+          camera.transform.position.z = z * Math.cos(opts.speed) + x * Math.sin(opts.speed);
           break;
         case 'ArrowUp':
-          camera.transform.position.y = y * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
-          camera.transform.position.z = z * Math.cos(rotSpeed) - y * Math.sin(rotSpeed);
+          camera.transform.position.y = y * Math.cos(opts.speed) + z * Math.sin(opts.speed);
+          camera.transform.position.z = z * Math.cos(opts.speed) - y * Math.sin(opts.speed);
           break;
         case 'ArrowDown':
-          camera.transform.position.y = y * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
-          camera.transform.position.z = z * Math.cos(rotSpeed) + y * Math.sin(rotSpeed);
+          camera.transform.position.y = y * Math.cos(opts.speed) - z * Math.sin(opts.speed);
+          camera.transform.position.z = z * Math.cos(opts.speed) + y * Math.sin(opts.speed);
           break;
       }
 
