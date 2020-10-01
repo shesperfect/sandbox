@@ -5,10 +5,6 @@ export class SceneSystem {
   private scenes = new Set<Scene>();
   private _current: Scene;
 
-  constructor() {
-    this.scenes.add(new Scene())
-  }
-
   get current(): Scene {
     return this._current || this.scenes[0];
   }

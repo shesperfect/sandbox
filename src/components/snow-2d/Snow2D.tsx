@@ -1,3 +1,5 @@
+import { BasicMaterial, BoxGeometry, Entity, Scene } from '@engine';
+
 import { BaseComponent } from 'common';
 
 import './Snow.scss';
@@ -11,6 +13,12 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   }
 
   protected onInit() {
+    const scene = new Scene();
+    const cube = new Entity(new BoxGeometry(), new BasicMaterial());
+
+    scene.add(cube);
+    this.app.scenes.add(scene);
+
     // const { width, height } = this.app.canvas;
     //
     // const camera = new PerspectiveCamera(45, width / height, 1, 2000);

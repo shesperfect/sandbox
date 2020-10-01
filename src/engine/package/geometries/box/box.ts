@@ -1,4 +1,6 @@
-import { BoxRenderer, Renderable } from '@engine';
+import { Renderable } from '@engine';
+
+import { BoxRenderer } from './box.renderer';
 
 import { Geometry } from '../geometry';
 

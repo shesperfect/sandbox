@@ -1,5 +1,5 @@
 import { AbstractRenderer, Entity } from '@engine';
-import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST } from '@engine/core';
+import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST, GeometryBuffer } from '@engine/core';
 
 export class BoxRenderer extends AbstractRenderer {
   protected vertices: number[] = [
@@ -53,6 +53,7 @@ export class BoxRenderer extends AbstractRenderer {
     -1, 0, 0,
     1, 0, 0,
   ];
+  protected buffer = new GeometryBuffer(36, [...this.vertices, ...this.normals]);
 
   add(entity: Entity) {
     if (this.entities.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
@@ -67,7 +68,7 @@ export class BoxRenderer extends AbstractRenderer {
   }
 
   render() {
-    // this.vbo.set(this.gl, new Float32Array(this.vertices));
+    this.buffer.sync(this.vbo);
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 36);
   }
 }

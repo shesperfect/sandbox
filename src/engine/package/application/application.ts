@@ -1,9 +1,5 @@
 import {
-  ClassProvider,
-  Container,
-  Inject,
-  INVALID_CAMERA, INVALID_CANVAS,
-  ValueProvider
+  ClassProvider, Container, Inject, INVALID_CAMERA, INVALID_CANVAS, ValueProvider
 } from '@engine/core';
 import { Renderer } from '../renderer';
 import { EventsSystem, InitEvent } from '../events';
@@ -12,6 +8,9 @@ import { ExtensionSystem } from '../extension';
 import { ApplicationProps } from './types';
 
 export class Application {
+  @Inject() renderer: Renderer;
+  @Inject() scenes: SceneSystem;
+
   private container = new Container();
   @Inject() private events: EventsSystem;
 
@@ -37,6 +36,9 @@ export class Application {
     // injecting all dependencies
     this.container.inject(this);
 
-    this.events.notify(InitEvent);
+    // register event system listeners
+    this.events.register(this.renderer);
+
+    this.events.broadcast(InitEvent);
   }
 }
