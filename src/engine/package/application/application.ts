@@ -1,10 +1,16 @@
 import {
-  ClassProvider, Container, Inject, INVALID_CAMERA, INVALID_CANVAS, ValueProvider
+  Renderer,
+  EventsSystem,
+  InitEvent,
+  SceneSystem,
+  ExtensionSystem, BoxRenderer
+} from '@engine';
+import {
+  Container, Inject,
+  ClassProvider, FactoryProvider, ValueProvider,
+  INVALID_CAMERA, INVALID_CANVAS,
 } from '@engine/core';
-import { Renderer } from '../renderer';
-import { EventsSystem, InitEvent } from '../events';
-import { SceneSystem } from '../scene';
-import { ExtensionSystem } from '../extension';
+
 import { ApplicationProps } from './types';
 
 export class Application {
@@ -16,7 +22,7 @@ export class Application {
 
   constructor(private props: ApplicationProps) {
     // register vital parts
-    this.container.register(Renderer, new ClassProvider(Renderer));
+    this.container.register(Renderer, new ValueProvider(new Renderer(this.container)));
     this.container.register(EventsSystem, new ClassProvider(EventsSystem));
     this.container.register(ExtensionSystem, new ClassProvider(ExtensionSystem));
     this.container.register(SceneSystem, new ClassProvider(SceneSystem));
@@ -32,6 +38,9 @@ export class Application {
     } else {
       throw new Error(INVALID_CAMERA);
     }
+
+    // register renderers
+    this.container.register(BoxRenderer, new FactoryProvider(BoxRenderer));
 
     // injecting all dependencies
     this.container.inject(this);

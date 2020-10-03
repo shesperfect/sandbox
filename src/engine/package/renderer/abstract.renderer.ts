@@ -1,8 +1,9 @@
-import { InitEvent, Listen } from '@engine';
 import { Inject, VAO, VBO } from '@engine/core';
 
-import { Renderer } from '../renderer';
-import { Entity } from '../geometries';
+import { InitEvent, Listen } from '@engine/events';
+import { Entity } from '@engine/geometries';
+
+import { Renderer } from './renderer';
 
 export abstract class AbstractRenderer {
   @Inject() protected renderer: Renderer;

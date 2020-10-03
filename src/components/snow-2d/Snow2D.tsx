@@ -13,11 +13,9 @@ export class Snow2DComponent extends BaseComponent<any, any> {
   }
 
   protected onInit() {
-    const scene = new Scene();
     const cube = new Entity(new BoxGeometry(), new BasicMaterial());
 
-    scene.add(cube);
-    this.app.scenes.add(scene);
+    this.app.scenes.current.add(cube);
 
     // const { width, height } = this.app.canvas;
     //

@@ -1,3 +1,4 @@
+export const NO_WEBGL = 'Your browser doesn\'t support webgl';
 export const NOT_NUMBER = 'Value isn\'t a number';
 export const NOT_COLOR_UNIT = 'The value you are providing isn\'t a color unit';
 export const NOT_NORMALIZED = 'The value must be normalized';

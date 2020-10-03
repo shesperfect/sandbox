@@ -1,12 +1,21 @@
 export class Subscription {
-  private children: Set<Subscription>;
+  private observers: Set<Function> = new Set();
+  private children: Set<Subscription> = new Set();
 
   constructor(private disposer?: Function) {}
 
-  add(...subs: Subscription[]) {
-    if (!this.children) this.children = new Set<Subscription>();
+  add(...args: (Subscription | Function)[]) {
+    args.forEach(arg => {
+      if (arg instanceof Subscription) {
+        this.children.add(arg);
+      } else {
+        this.observers.add(arg)
+      }
+    });
+  }
 
-    subs.forEach(sub => this.children.add(sub));
+  execute(data: any) {
+    this.observers.forEach(callback => callback(data));
   }
 
   unsubscribe() {

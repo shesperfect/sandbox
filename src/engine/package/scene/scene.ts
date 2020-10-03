@@ -1,29 +1,23 @@
-import { Type } from '@engine/core';
-
-import { Entity } from '../geometries';
-import { AbstractRenderer, RENDERABLE_METADATA } from '../renderer';
-import { Material } from '../materials';
+import { Entity, Material } from '@engine';
+import { ENTITY_ALREADY_EXISTS, EventEmitter } from '@engine/core';
 
 import 'reflect-metadata';
 
 export class Scene {
-  private _tree = new Map<Material, Map<Type<AbstractRenderer>, AbstractRenderer>>();
+  added$ = new EventEmitter();
 
-  get tree() { return this._tree; }
+  private _tree = new Map<Material, Set<Entity>>();
 
   add(entity: Entity) {
     const material = entity.material.constructor;
-    const rendererType = Reflect.getMetadata(RENDERABLE_METADATA, entity.geometry.constructor);
 
-    if (!this._tree.get(material)) this._tree.set(material, new Map());
+    if (!this._tree.get(material)) this._tree.set(material, new Set());
 
-    if (!this._tree.get(material)?.get(rendererType)) {
-      const renderer = new rendererType(); // TODO: How??
+    if (this._tree.get(material)?.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
 
-      this._tree.get(material)?.set(rendererType, renderer);
-    }
+    this._tree.get(material)?.add(entity);
 
-    this._tree.get(material)?.[rendererType].add(entity);
+    this.added$.emit(entity);
   }
 
   remove(entity: Entity) {}

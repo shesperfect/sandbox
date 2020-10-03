@@ -1,5 +1,5 @@
+import { Camera } from '@engine';
 import { Vector2 } from '@engine/core';
-import { Camera } from '../camera';
 
 export interface OrbitControlsOptions {
   keyboard?: boolean,

@@ -1,5 +1,7 @@
-import { AbstractRenderer, Entity } from '@engine';
+import { Entity } from '@engine';
 import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST, GeometryBuffer } from '@engine/core';
+
+import { AbstractRenderer } from '../abstract.renderer';
 
 export class BoxRenderer extends AbstractRenderer {
   protected vertices: number[] = [

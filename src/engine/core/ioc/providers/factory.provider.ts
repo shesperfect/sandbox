@@ -1,3 +1,4 @@
+import { Type } from '@engine/core';
 import { Provider } from './provider';
 import { Type } from '@engine/core/types';
 

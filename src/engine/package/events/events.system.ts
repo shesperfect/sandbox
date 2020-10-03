@@ -1,18 +1,29 @@
-import { EVENTS_METADATA_KEY } from './const';
+import { EventEmitter, Subscription } from '@engine/core';
+import { EventListener, EVENTS_METADATA_KEY, EventSelector } from './listen.decorator';
 
 import 'reflect-metadata';
 
 export class EventsSystem {
-  directory = new Map<Symbol, Function[]>();
+  private emitters = new Map<Symbol, EventEmitter<any>>();
+  private subscriptions = new Map<Symbol, Subscription>();
 
   register(target: any) {
-    const handlers = Reflect.getMetadata(EVENTS_METADATA_KEY, target);
+    const listener: EventListener = Reflect.getMetadata(EVENTS_METADATA_KEY, target);
 
-    handlers.forEach((callbacks, key) => {
-      if (!this.directory.has(key)) this.directory.set(key, []);
+    listener.local.forEach((callbacks: string[], emitter: EventSelector) => {
+      emitter(target).subscribe(args => {
+        callbacks.forEach((callback: string) => target[callback](args))
+      });
+    });
+
+    listener.global.forEach((callbacks: string[], key: Symbol) => {
+      if (!this.emitters.has(key)) {
+        this.emitters.set(key, new EventEmitter<any>());
+        this.subscriptions.set(key, new Subscription());
+      }
 
       callbacks.forEach(callback => {
-        this.directory.get(key)?.push(target[callback].bind(target));
+        this.subscriptions.get(key)?.add(target[callback].bind(target));
       });
     });
   }
@@ -22,8 +33,6 @@ export class EventsSystem {
   notify(target: any, eventName: Symbol) {}
 
   broadcast(eventName: Symbol, payload?: any) {
-    this.directory.get(eventName)?.forEach(callback => {
-      callback(payload);
-    });
+    this.emitters.get(eventName)?.emit(payload);
   }
 }

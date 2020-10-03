@@ -1,15 +1,15 @@
 import { Subscription } from './subscription';
 
 export class EventEmitter<T> {
-  observers = new Set<Function>();
+  subscription: Subscription = new Subscription();
 
   subscribe(fn: Function): Subscription {
-    this.observers.add(fn);
+    this.subscription.add(fn);
 
-    return new Subscription(() => this.observers.delete(fn));
+    return this.subscription;
   }
 
   emit(data: T) {
-    this.observers.forEach(subscriber => subscriber(data));
+    this.subscription.execute(data);
   }
 }
