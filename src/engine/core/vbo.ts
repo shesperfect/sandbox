@@ -3,6 +3,8 @@ export class VBO {
   gl: WebGLRenderingContext;
 
   bind(gl: any) {
+    console.log('vbo bind');
+
     this.gl = gl;
 
     if (!this.descriptor) this.descriptor = gl.createBuffer();

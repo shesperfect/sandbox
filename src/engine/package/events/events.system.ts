@@ -18,8 +18,10 @@ export class EventsSystem {
 
     listener.global.forEach((callbacks: string[], key: Symbol) => {
       if (!this.emitters.has(key)) {
-        this.emitters.set(key, new EventEmitter<any>());
-        this.subscriptions.set(key, new Subscription());
+        const emitter = new EventEmitter<any>();
+
+        this.emitters.set(key, emitter);
+        this.subscriptions.set(key, emitter.subscribe());
       }
 
       callbacks.forEach(callback => {

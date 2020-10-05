@@ -5,6 +5,7 @@ export class Subscription {
   constructor(private disposer?: Function) {}
 
   add(...args: (Subscription | Function)[]) {
+
     args.forEach(arg => {
       if (arg instanceof Subscription) {
         this.children.add(arg);

@@ -17,7 +17,11 @@ export class Container {
 
     if (!provider) throw new Error(`Cannot find a provider for the given token: ${token}`);
 
-    return provider.resolve();
+    const instance = provider.resolve();
+
+    this.inject(instance);
+
+    return instance;
   }
 
   inject(target: any) {

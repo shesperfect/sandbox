@@ -48,6 +48,6 @@ export class Application {
     // register event system listeners
     this.events.register(this.renderer);
 
-    this.events.broadcast(InitEvent);
+    this.events.broadcast(InitEvent, 'hui');
   }
 }

@@ -69,7 +69,7 @@ export class BoxRenderer extends AbstractRenderer {
     this.entities.delete(entity);
   }
 
-  render() {
+  onRender() {
     this.buffer.sync(this.vbo);
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 36);
   }

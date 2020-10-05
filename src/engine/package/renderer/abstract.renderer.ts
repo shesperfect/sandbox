@@ -1,6 +1,5 @@
 import { Inject, VAO, VBO } from '@engine/core';
 
-import { InitEvent, Listen } from '@engine/events';
 import { Entity } from '@engine/geometries';
 
 import { Renderer } from './renderer';
@@ -16,14 +15,23 @@ export abstract class AbstractRenderer {
   protected abstract vertices: number[];
   protected abstract normals: number[];
 
-  @Listen(InitEvent)
+  private inited = false;
+
   init() {
     this.gl = this.renderer.gl;
     this.vao.bind(this.gl);
     this.vbo.bind(this.gl);
+
+    this.inited = true;
   }
 
   abstract add(entity: Entity): void;
   abstract remove(entity: Entity): void;
-  abstract render(): void;
+  abstract onRender(): void;
+
+  render() {
+    if (!this.inited) this.init();
+
+    this.onRender();
+  };
 }
