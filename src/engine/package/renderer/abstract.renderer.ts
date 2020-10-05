@@ -1,4 +1,4 @@
-import { Inject, VAO, VBO } from '@engine/core';
+import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST, Inject, VAO, VBO } from '@engine/core';
 
 import { Entity } from '@engine/geometries';
 
@@ -25,9 +25,25 @@ export abstract class AbstractRenderer {
     this.inited = true;
   }
 
-  abstract add(entity: Entity): void;
-  abstract remove(entity: Entity): void;
+  abstract onAdd(entity: Entity): void;
+  abstract onRemove(entity: Entity): void;
   abstract onRender(): void;
+
+  add(entity: Entity) {
+    if (this.entities.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
+
+    this.entities.add(entity);
+
+    this.onAdd(entity);
+  }
+
+  remove(entity: Entity) {
+    if (!this.entities.has(entity)) throw new Error(ENTITY_DOESNT_EXIST);
+
+    this.entities.delete(entity);
+
+    this.onRemove(entity);
+  }
 
   render() {
     if (!this.inited) this.init();

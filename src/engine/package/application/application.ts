@@ -6,9 +6,13 @@ import {
   ExtensionSystem, BoxRenderer
 } from '@engine';
 import {
-  Container, Inject,
-  ClassProvider, FactoryProvider, ValueProvider,
+  Container,
+  Inject,
+  ClassProvider,
+  FactoryProvider,
+  ValueProvider,
   INVALID_CAMERA, INVALID_CANVAS,
+  ShaderSystem,
 } from '@engine/core';
 
 import { ApplicationProps } from './types';
@@ -26,6 +30,7 @@ export class Application {
     this.container.register(EventsSystem, new ClassProvider(EventsSystem));
     this.container.register(ExtensionSystem, new ClassProvider(ExtensionSystem));
     this.container.register(SceneSystem, new ClassProvider(SceneSystem));
+    this.container.register(ShaderSystem, new ClassProvider(ShaderSystem));
 
     if (props.canvas) {
       this.container.register('canvas', new ValueProvider(props.canvas));

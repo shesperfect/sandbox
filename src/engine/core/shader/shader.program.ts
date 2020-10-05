@@ -15,7 +15,7 @@ function createShader(gl: any, type: number, source: string) {
 export class ShaderProgram {
   program: WebGLProgram;
 
-  constructor(gl: any, vertexShaderSrc: string, fragmentShaderSrc: string) {
+  constructor(private gl: any, vertexShaderSrc: string, fragmentShaderSrc: string) {
     const program = gl.createProgram();
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSrc);
     const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSrc);
@@ -31,5 +31,9 @@ export class ShaderProgram {
       console.warn(gl.getProgramInfoLog(program));
       gl.deleteProgram(program);
     }
+  }
+
+  link() {
+    this.gl.useProgram(this.program);
   }
 }

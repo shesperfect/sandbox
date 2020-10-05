@@ -7,6 +7,6 @@ export * from './lights';
 export * from './controls';
 export * from './clock';
 export * from './events';
-export * from './axes-helper';
 export * from './renderer';
 export * from './application';
+export * from './components';

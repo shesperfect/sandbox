@@ -1,1 +1,4 @@
-export abstract class Material {}
+export abstract class Material {
+  vertexSource: string;
+  fragmentSource: string;
+}

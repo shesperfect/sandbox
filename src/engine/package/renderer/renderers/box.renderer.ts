@@ -1,5 +1,5 @@
 import { Entity } from '@engine';
-import { ENTITY_ALREADY_EXISTS, ENTITY_DOESNT_EXIST, GeometryBuffer } from '@engine/core';
+import { GeometryBuffer } from '@engine/core';
 
 import { AbstractRenderer } from '../abstract.renderer';
 
@@ -57,16 +57,12 @@ export class BoxRenderer extends AbstractRenderer {
   ];
   protected buffer = new GeometryBuffer(36, [...this.vertices, ...this.normals]);
 
-  add(entity: Entity) {
-    if (this.entities.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
-
-    this.entities.add(entity);
+  onAdd(entity: Entity) {
+    // add to buffer
   }
 
-  remove(entity: Entity) {
-    if (!this.entities.has(entity)) throw new Error(ENTITY_DOESNT_EXIST);
-
-    this.entities.delete(entity);
+  onRemove(entity: Entity) {
+    // remove from buffer
   }
 
   onRender() {
