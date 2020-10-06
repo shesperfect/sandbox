@@ -1,4 +1,7 @@
+import { EventEmitter } from '@engine/core';
+
 export abstract class AbstractVector<V> {
+  changed$ = new EventEmitter<{ prop: string, value: number }>();
   dirty = false;
 
   protected abstract buffer: Float32Array;

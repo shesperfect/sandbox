@@ -13,39 +13,47 @@ export class Transform {
   private scaleTransform = new Matrix4();
 
   constructor() {
-    this._position.x$.subscribe(value => this.positionTransform.set(1, 4, value));
-    this._position.y$.subscribe(value => this.positionTransform.set(2, 4, value));
-    this._position.z$.subscribe(value => this.positionTransform.set(3, 4, value));
-    this._rotation.x$.subscribe(value => {
-      const c = Math.cos(value);
-      const s = Math.sin(value);
-
-      this.rotationXTransform.set(2, 2, c);
-      this.rotationXTransform.set(3, 2, s);
-      this.rotationXTransform.set(2, 3, -s);
-      this.rotationXTransform.set(3, 3, c);
+    this._position.changed$.subscribe(({ prop, value }) => {
+      if (prop === 'x') this.positionTransform.set(1, 4, value);
+      else if (prop === 'y') this.positionTransform.set(2, 4, value);
+      else if (prop === 'z') this.positionTransform.set(3, 4, value);
     });
-    this._rotation.y$.subscribe(value => {
-      const c = Math.cos(value);
-      const s = Math.sin(value);
 
-      this.rotationYTransform.set(1, 1, c);
-      this.rotationYTransform.set(3, 1, -s);
-      this.rotationYTransform.set(1, 3, s);
-      this.rotationYTransform.set(3, 3, c);
-    });
-    this._rotation.z$.subscribe(value => {
-      const c = Math.cos(value);
-      const s = Math.sin(value);
+    this._rotation.changed$.subscribe(({ prop, value }) => {
+      if (prop === 'x') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
 
-      this.rotationZTransform.set(1, 1, c);
-      this.rotationZTransform.set(2, 1, s);
-      this.rotationZTransform.set(1, 2, -s);
-      this.rotationZTransform.set(2, 2, c);
+        this.rotationXTransform.set(2, 2, c);
+        this.rotationXTransform.set(3, 2, s);
+        this.rotationXTransform.set(2, 3, -s);
+        this.rotationXTransform.set(3, 3, c);
+      }
+      else if (prop === 'y') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
+
+        this.rotationYTransform.set(1, 1, c);
+        this.rotationYTransform.set(3, 1, -s);
+        this.rotationYTransform.set(1, 3, s);
+        this.rotationYTransform.set(3, 3, c);
+      }
+      else if (prop === 'z') {
+        const c = Math.cos(value);
+        const s = Math.sin(value);
+
+        this.rotationZTransform.set(1, 1, c);
+        this.rotationZTransform.set(2, 1, s);
+        this.rotationZTransform.set(1, 2, -s);
+        this.rotationZTransform.set(2, 2, c);
+      }
     });
-    this._scale.x$.subscribe(value => this.scaleTransform.set(1, 1, value));
-    this._scale.y$.subscribe(value => this.scaleTransform.set(2, 2, value));
-    this._scale.z$.subscribe(value => this.scaleTransform.set(3, 3, value));
+
+    this._scale.changed$.subscribe(({ prop, value }) => {
+      if (prop === 'x') this.scaleTransform.set(1, 1, value);
+      else if (prop === 'y') this.scaleTransform.set(2, 2, value);
+      else if (prop === 'z') this.scaleTransform.set(3, 3, value);
+    });
   }
 
   get matrix(): Matrix4 {
