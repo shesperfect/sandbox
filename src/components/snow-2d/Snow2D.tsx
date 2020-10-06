@@ -1,4 +1,4 @@
-import { BasicMaterial, BoxGeometry, Entity, Scene } from '@engine';
+import { BasicMaterial, BoxGeometry, Entity } from '@engine';
 
 import { BaseComponent } from 'common';
 

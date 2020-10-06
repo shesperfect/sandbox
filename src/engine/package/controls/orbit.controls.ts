@@ -7,7 +7,7 @@ export interface OrbitControlsOptions {
 }
 
 const defaultOptions = {
-  keyboard: false,
+  keyboard: true,
   speed: .1,
 };
 
@@ -16,7 +16,7 @@ export class OrbitControls {
   private isMoving = false;
 
 
-  constructor(canvas: HTMLCanvasElement, camera: Camera, options: OrbitControlsOptions) {
+  constructor(canvas: HTMLCanvasElement, camera: Camera, options?: OrbitControlsOptions) {
     const opts = { ...defaultOptions, ...options };
 
     const zoom = e => {
@@ -56,7 +56,7 @@ export class OrbitControls {
       const position = camera.transform.position.clone();
       const direction = camera.transform.position.clone().subtract(camera.target);
       const radius = direction.length;
-      console.log(position.toArray());
+
       const phi = Math.atan2(position.y, position.x) + deltaPhi;
       const theta = Math.acos(direction.z / radius) + deltaTheta;
       const x = radius * Math.sin(theta) * Math.cos(phi);
@@ -68,8 +68,6 @@ export class OrbitControls {
       // console.log('radius', radius, 'sin theta', Math.sin(theta), 'cos theta', Math.cos(theta), 'sin phi', Math.sin(phi), 'cos phi', Math.cos(phi));
       // console.log(x, y, z);
       // console.log('');
-
-      console.log( Math.atan2(position.y, position.x), Math.sin(phi), Math.cos(phi));
 
       camera.transform.position.set(x, y, z);
       camera.lookAt();

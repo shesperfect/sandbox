@@ -6,7 +6,7 @@ export class FactoryProvider<T> extends Provider<T> {
     super();
   }
 
-  resolve(): T {
-    return new this.provide();
+  resolve(params = []): T {
+    return new this.provide(...params);
   }
 }

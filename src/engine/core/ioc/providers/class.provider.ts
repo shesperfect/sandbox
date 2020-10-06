@@ -9,9 +9,9 @@ export class ClassProvider<T> extends Provider<T> {
     super();
   }
 
-  resolve(): T {
+  resolve(params = []): T {
     if (!this.instance) {
-      this.instance = new this.provide();
+      this.instance = new this.provide(...params);
     }
 
     return this.instance;

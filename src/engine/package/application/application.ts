@@ -3,7 +3,7 @@ import {
   EventsSystem,
   InitEvent,
   SceneSystem,
-  ExtensionSystem, BoxRenderer
+  BoxRenderer
 } from '@engine';
 import {
   Container,
@@ -28,7 +28,6 @@ export class Application {
     // register vital parts
     this.container.register(Renderer, new ValueProvider(new Renderer(this.container)));
     this.container.register(EventsSystem, new ClassProvider(EventsSystem));
-    this.container.register(ExtensionSystem, new ClassProvider(ExtensionSystem));
     this.container.register(SceneSystem, new ClassProvider(SceneSystem));
     this.container.register(ShaderSystem, new ClassProvider(ShaderSystem));
 
@@ -47,12 +46,12 @@ export class Application {
     // register renderers
     this.container.register(BoxRenderer, new FactoryProvider(BoxRenderer));
 
-    // injecting all dependencies
+    // injecting application dependencies
     this.container.inject(this);
 
     // register event system listeners
     this.events.register(this.renderer);
 
-    this.events.broadcast(InitEvent, 'hui');
+    this.events.broadcast(InitEvent);
   }
 }

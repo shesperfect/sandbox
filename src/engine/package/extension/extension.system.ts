@@ -1,9 +1,7 @@
-import { Inject } from '@engine/core';
-
 export class ExtensionSystem {
-  @Inject('context') gl: WebGLRenderingContext;
-
   private extensions = new Map<string, any>();
+
+  constructor(private gl: any) {}
 
   get(extName: string) {
     if (this.extensions.has(extName)) return this.extensions.get(extName);

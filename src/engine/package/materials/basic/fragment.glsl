@@ -6,7 +6,7 @@ precision mediump float;
 //varying vec2 v_texcoord;
 //varying vec2 v_position;
 varying vec3 v_color;
-varying vec3 v_light;
+//varying vec3 v_light;
 
 void main() {
 //    gl_FragColor = texture2D(u_spriteTexture, v_texcoord + v_position * (32. / 511.));

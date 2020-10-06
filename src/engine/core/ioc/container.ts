@@ -12,12 +12,12 @@ export class Container {
     this.providers.set(token, provider);
   }
 
-  resolve<T>(token: Token<T>): T {
+  resolve<T>(token: Token<T>, ...params: any): T {
     const provider = this.providers.get(token);
 
     if (!provider) throw new Error(`Cannot find a provider for the given token: ${token}`);
 
-    const instance = provider.resolve();
+    const instance = provider.resolve(params);
 
     this.inject(instance);
 

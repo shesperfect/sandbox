@@ -1,7 +1,7 @@
 import { VBO } from '../vbo';
 
 export const constants = {
-  initial: 3,
+  initial: 1,
   omit: 1,
 };
 
