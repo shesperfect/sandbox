@@ -20,7 +20,6 @@ export class Canvas extends React.Component<CanvasProps, any> {
 
     this.setViewport();
     this.props.onLoad(this.canvasRef.current);
-    this.animate();
   }
 
   render() {
@@ -41,11 +40,5 @@ export class Canvas extends React.Component<CanvasProps, any> {
 
       this.props.onResize(width, height);
     }
-  }
-
-  private animate() {
-    // this.props.onRender();
-    //
-    // requestAnimationFrame(this.animate.bind(this));
   }
 }

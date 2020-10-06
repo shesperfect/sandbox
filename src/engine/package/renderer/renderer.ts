@@ -17,6 +17,7 @@ import { RENDERABLE_METADATA } from './renderable.decorator';
 
 export class Renderer {
   ready$ = new EventEmitter();
+  rendered$ = new EventEmitter();
 
   extensions: ExtensionSystem;
 
@@ -74,6 +75,8 @@ export class Renderer {
       shader.link();
       renderer.render();
     });
+
+    this.rendered$.emit();
 
     requestAnimationFrame(this.render.bind(this));
   }

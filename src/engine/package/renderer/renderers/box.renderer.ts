@@ -90,7 +90,7 @@ export class BoxRenderer extends AbstractRenderer {
     1, 0, 0,
     1, 0, 0,
   ];
-  protected buffer = new GeometryBuffer(19, this.vertices);
+  protected buffer = new GeometryBuffer(20, [...this.vertices, ...this.normals]);
 
   private ext: ANGLE_instanced_arrays;
 
@@ -98,26 +98,26 @@ export class BoxRenderer extends AbstractRenderer {
     this.ext = this.renderer.extensions.get('ANGLE_instanced_arrays');
 
     // attributes
-    const stride = (3 + 16) * Float32Array.BYTES_PER_ELEMENT;
+    const stride = (4 + 16) * Float32Array.BYTES_PER_ELEMENT;
 
     const pos = this.gl.getAttribLocation(this.shader.program, 'a_position');
     this.gl.vertexAttribPointer(pos, 3, this.gl.FLOAT, false,  0, 0);
     this.gl.enableVertexAttribArray(pos);
 
-    // const normal = this.gl.getAttribLocation(this.shader.program, 'a_normal');
-    // this.gl.vertexAttribPointer(normal, 3, this.gl.FLOAT, false,  0, 108 * Float32Array.BYTES_PER_ELEMENT);
-    // this.gl.enableVertexAttribArray(normal);
+    const normal = this.gl.getAttribLocation(this.shader.program, 'a_normal');
+    this.gl.vertexAttribPointer(normal, 3, this.gl.FLOAT, false,  0, 108 * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.enableVertexAttribArray(normal);
 
     const color = this.gl.getAttribLocation(this.shader.program, 'a_color');
-    this.gl.vertexAttribPointer(color, 3, this.gl.FLOAT, false,  stride, 108 * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.vertexAttribPointer(color, 4, this.gl.FLOAT, false,  stride, (108 + 108) * Float32Array.BYTES_PER_ELEMENT);
     this.gl.enableVertexAttribArray(color);
     this.ext.vertexAttribDivisorANGLE(color, 1);
 
     const model = this.gl.getAttribLocation(this.shader.program, 'a_model');
-    this.gl.vertexAttribPointer(model, 4, this.gl.FLOAT, false, stride, (108 + 3) * Float32Array.BYTES_PER_ELEMENT);
-    this.gl.vertexAttribPointer(model + 1, 4, this.gl.FLOAT, false, stride, (108 + 3 + 4) * Float32Array.BYTES_PER_ELEMENT);
-    this.gl.vertexAttribPointer(model + 2, 4, this.gl.FLOAT, false, stride, (108 + 3 + 8) * Float32Array.BYTES_PER_ELEMENT);
-    this.gl.vertexAttribPointer(model + 3, 4, this.gl.FLOAT, false, stride, (108 + 3 + 12) * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.vertexAttribPointer(model, 4, this.gl.FLOAT, false, stride, (108 + 108 + 4) * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.vertexAttribPointer(model + 1, 4, this.gl.FLOAT, false, stride, (108 + 108 + 4 + 4) * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.vertexAttribPointer(model + 2, 4, this.gl.FLOAT, false, stride, (108 + 108 + 4 + 8) * Float32Array.BYTES_PER_ELEMENT);
+    this.gl.vertexAttribPointer(model + 3, 4, this.gl.FLOAT, false, stride, (108 + 108 + 4 + 12) * Float32Array.BYTES_PER_ELEMENT);
     this.gl.enableVertexAttribArray(model);
     this.gl.enableVertexAttribArray(model + 1);
     this.gl.enableVertexAttribArray(model + 2);
@@ -138,7 +138,7 @@ export class BoxRenderer extends AbstractRenderer {
   }
 
   onAdd(entity: Entity) {
-    this.buffer.add(entity.material.color.rgb.toArray());
+    this.buffer.add(entity.material.color.toArray());
     this.buffer.add(entity.transform.matrix.toArray());
   }
 
