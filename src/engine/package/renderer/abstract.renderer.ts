@@ -37,6 +37,7 @@ export abstract class AbstractRenderer {
 
   abstract onInit(): void;
   abstract onAdd(entity: Entity): void;
+  abstract onUpdate(entity: Entity): void;
   abstract onRemove(entity: Entity): void;
   abstract onRender(): void;
 
@@ -44,6 +45,8 @@ export abstract class AbstractRenderer {
     if (this.entities.has(entity)) throw new Error(ENTITY_ALREADY_EXISTS);
 
     this.entities.add(entity);
+
+    entity.updated$.subscribe(() => this.onUpdate(entity));
 
     this.onAdd(entity);
   }

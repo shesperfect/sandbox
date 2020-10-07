@@ -1,6 +1,8 @@
-import { Matrix4, Vector3 } from '@engine/core';
+import { EventEmitter, Matrix4, Vector3 } from '@engine/core';
 
 export class Transform {
+  changed$ = new EventEmitter();
+
   private _transform = new Matrix4();
   private _position: Vector3 = new Vector3();
   private _rotation: Vector3 = new Vector3();
@@ -17,6 +19,8 @@ export class Transform {
       if (prop === 'x') this.positionTransform.set(1, 4, value);
       else if (prop === 'y') this.positionTransform.set(2, 4, value);
       else if (prop === 'z') this.positionTransform.set(3, 4, value);
+
+      this.changed$.emit();
     });
 
     this._rotation.changed$.subscribe(({ prop, value }) => {
@@ -47,12 +51,16 @@ export class Transform {
         this.rotationZTransform.set(1, 2, -s);
         this.rotationZTransform.set(2, 2, c);
       }
+
+      this.changed$.emit();
     });
 
     this._scale.changed$.subscribe(({ prop, value }) => {
       if (prop === 'x') this.scaleTransform.set(1, 1, value);
       else if (prop === 'y') this.scaleTransform.set(2, 2, value);
       else if (prop === 'z') this.scaleTransform.set(3, 3, value);
+
+      this.changed$.emit();
     });
   }
 

@@ -19,7 +19,9 @@ export class GeometryBuffer extends DataBuffer {
     return pointer;
   }
 
-  fill(data: Array<number | number[] | Float32Array>) {
+  fill(data: Array<number | number[] | Float32Array>, index?: number) {
+    if (index) this.pointer = index;
+
     for (let i = 0; i < data.length; i++) {
       (data[i] as any).length
         ? this.fill(data[i] as any)

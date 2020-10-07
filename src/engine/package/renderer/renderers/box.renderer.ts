@@ -138,8 +138,12 @@ export class BoxRenderer extends AbstractRenderer {
   }
 
   onAdd(entity: Entity) {
-    this.buffer.add(entity.material.color.toArray());
+    entity.bufferIndex = this.buffer.add(entity.material.color.toArray());
     this.buffer.add(entity.transform.matrix.toArray());
+  }
+
+  onUpdate(entity: Entity) {
+    this.buffer.fill([...entity.material.color.toArray(), ...entity.transform.matrix.toArray()], entity.bufferIndex);
   }
 
   onRemove(entity: Entity) {
@@ -152,7 +156,7 @@ export class BoxRenderer extends AbstractRenderer {
       this.gl.TRIANGLES,
       0,
       36,
-      1,
+      this.buffer.count,
     );
   }
 }
