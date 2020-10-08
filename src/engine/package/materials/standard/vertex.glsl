@@ -8,31 +8,24 @@ attribute mat4 a_model;
 uniform mat4 u_projection;
 
 varying vec4 v_color;
-varying vec3 v_light;
 
 void main() {
     gl_Position = u_projection * a_model * vec4(a_position, 1.0);
 
-    vec3 light = vec3(0.);
-
-//    // ambient light
+    // ambient light
     vec3 ambientLight = vec3(0.3, 0.3, 0.3);
-    light += ambientLight;
-//
+
     // directional light
     vec3 directionalLightColor = vec3(1, 1, 1);
     vec3 directionalLightDirection = normalize(vec3(1., 1., 2.));
-    light += dot(mat3(a_model) * a_normal, directionalLightDirection) * directionalLightColor;
+    vec3 directionalLight = dot(directionalLightDirection, mat3(a_model) * a_normal) * directionalLightColor;
 
-//    // point light
-//    vec3 surfaceWorldPosition = (a_model * vec4(a_position, 1.0)).xyz;
-//    vec3 pointLightColor = vec3(1, 1, 1);
-//    vec3 pointLightWorldPosition = vec3(11., 12., 19.);
-//    vec3 surfaceToLight = pointLightWorldPosition - surfaceWorldPosition;
-//    light += dot(mat3(a_model) * a_normal, surfaceToLight) * pointLightColor;
+    // point light
+    vec3 surfaceWorldPosition = (a_model * vec4(a_position, 1.0)).xyz;
+    vec3 pointLightColor = vec3(1, 1, 1);
+    vec3 pointLightWorldPosition = vec3(0., 0., 1.3);
+    vec3 surfaceToLight = normalize(pointLightWorldPosition - surfaceWorldPosition);
+    vec3 pointLight = dot(surfaceToLight, mat3(a_model) * a_normal) * pointLightColor;
 
-//    v_texcoord = a_texcoord;
-//    v_position = a_position;
-    v_color = a_color;
-    v_light = light;
+    v_color = vec4(ambientLight + directionalLight + pointLight, 1.) * a_color;
 }

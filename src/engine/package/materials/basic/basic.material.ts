@@ -7,6 +7,7 @@ export class BasicMaterial extends Material {
   constructor() {
     super();
 
+    this._id = 0;
     this.vertexSource = vertexSource;
     this.fragmentSource = fragmentSource;
   }

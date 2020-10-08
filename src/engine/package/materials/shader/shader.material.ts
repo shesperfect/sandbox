@@ -8,6 +8,7 @@ interface ShaderMaterialOptions {
 export class ShaderMaterial extends Material {
   constructor(private options: ShaderMaterialOptions) {
     super();
+    this._id = Math.random();
     this.vertexSource = options.vertexSource;
     this.fragmentSource = options.fragmentSource;
   }
