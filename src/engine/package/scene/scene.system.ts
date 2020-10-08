@@ -1,29 +1,53 @@
-import { SCENE_ALREADY_EXISTS, SCENE_DOESNT_EXIST } from '@engine/core';
+import { Entity } from '@engine/geometries';
+import {
+  SCENE_ALREADY_ENABLED,
+  SCENE_DOESNT_ENABLED,
+  SCENE_ALREADY_EXISTS,
+  SCENE_DOESNT_EXIST,
+  EventEmitter,
+} from '@engine/core';
 import { Scene } from './scene';
 
 export class SceneSystem {
-  private scenes = new Set<Scene>([new Scene()]);
-  private _current: Scene;
+  added$ = new EventEmitter<{ scene: Scene, entity: Entity }>();
 
-  get current(): Scene {
-    return this._current || this.scenes.values().next().value;
+  private _scenes = new Set<Scene>();
+  private enabled = new Set<Scene>();
+
+  constructor() {
+    const initialScene = new Scene();
+
+    this._scenes.add(initialScene);
+    this.enable(initialScene);
+  }
+
+  get current(): Set<Scene> {
+    return this.enabled;
   }
 
   add(scene: Scene) {
-    if (this.scenes.has(scene)) throw new Error(SCENE_ALREADY_EXISTS);
+    if (this._scenes.has(scene)) throw new Error(SCENE_ALREADY_EXISTS);
 
-    this.scenes.add(scene);
+    this._scenes.add(scene);
 
-    if (this.scenes.size === 0) this._current = scene;
+    scene.added$.subscribe(entity => this.added$.emit({ scene, entity }));
   }
 
   remove(scene: Scene) {
-    if (!this.scenes.has(scene)) throw new Error(SCENE_DOESNT_EXIST);
+    if (!this._scenes.has(scene)) throw new Error(SCENE_DOESNT_EXIST);
 
-    this.scenes.delete(scene);
+    this._scenes.delete(scene);
   }
 
-  show(scene: Scene) {}
+  enable(scene: Scene) {
+    if (this.enabled.has(scene)) throw new Error(SCENE_ALREADY_ENABLED);
 
-  hide(scene: Scene) {}
+    this.enabled.add(scene);
+  }
+
+  disable(scene: Scene) {
+    if (!this._scenes.has(scene)) throw new Error(SCENE_DOESNT_ENABLED);
+
+    this.enabled.delete(scene);
+  }
 }

@@ -1,1 +1,1 @@
-export * from './axes-helper';
+export * from './axes.helper';

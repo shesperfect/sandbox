@@ -6,10 +6,9 @@ import {
   ShaderSystem
 } from '@engine/core';
 
-import { SceneSystem } from '@engine/scene';
+import { Scene, SceneSystem } from '@engine/scene';
 import { Camera } from '@engine/camera';
 import { InitEvent, Listen } from '@engine/events';
-import { Entity } from '@engine/geometries';
 import { ExtensionSystem } from '@engine/extension';
 
 import { AbstractRenderer } from './abstract.renderer';
@@ -27,7 +26,7 @@ export class Renderer {
   @Inject('canvas') private canvas: HTMLCanvasElement;
 
   private _gl: WebGLRenderingContext;
-  private register = new Map<ShaderProgram, AbstractRenderer>();
+  private register = new Map<Scene, Map<ShaderProgram, AbstractRenderer>>();
 
   constructor(private container: Container) {}
 
@@ -43,8 +42,6 @@ export class Renderer {
     }
 
     this._gl = gl;
-    this._gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    this._gl.clearColor(.4, .4, .4, 1);
     this._gl.enable(this.gl.DEPTH_TEST);
 
     this.extensions = new ExtensionSystem(gl);
@@ -54,26 +51,30 @@ export class Renderer {
     this.render();
   }
 
-  @Listen(context => context.scenes.current.added$)
-  add(entity: Entity) {
+  @Listen(context => context.scenes.added$)
+  add({ scene, entity }) {
     const rendererType = Reflect.getMetadata(RENDERABLE_METADATA, entity.geometry.constructor);
     const shader = this.shader.get(entity.material, this._gl);
 
-    if (!this.register.has(shader)) {
+    if (!this.register.has(scene)) this.register.set(scene, new Map());
+
+    if (!this.register.get(scene)?.has(shader)) {
       const renderer = this.container.resolve<AbstractRenderer>(rendererType, shader);
 
-      this.register.set(shader, renderer);
+      this.register.get(scene)?.set(shader, renderer);
     }
 
-    this.register.get(shader)?.add(entity);
+    this.register.get(scene)?.get(shader)?.add(entity);
   }
 
   render() {
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    this.scenes.current.forEach(scene => {
+      scene.prepare(this.gl, this.camera);
 
-    this.register.forEach((renderer: AbstractRenderer, shader: ShaderProgram) => {
-      shader.link();
-      renderer.render();
+      this.register.get(scene)?.forEach((renderer: AbstractRenderer, shader: ShaderProgram) => {
+        shader.link();
+        renderer.render();
+      });
     });
 
     this.rendered$.emit();
