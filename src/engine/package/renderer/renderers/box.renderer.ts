@@ -4,7 +4,7 @@ import { GeometryBuffer } from '@engine/core';
 import { AbstractRenderer } from '../abstract.renderer';
 
 export class BoxRenderer extends AbstractRenderer {
-  protected vertices: number[] = [
+  private vertices: number[] = [
     -0.5, -0.5,  -0.5,
     -0.5,  0.5,  -0.5,
     0.5, -0.5,  -0.5,
@@ -47,7 +47,7 @@ export class BoxRenderer extends AbstractRenderer {
     0.5,   0.5, -0.5,
     0.5,   0.5,  0.5,
   ];
-  protected normals: number[] = [
+  private normals: number[] = [
     0, 0, -1,
     0, 0, -1,
     0, 0, -1,

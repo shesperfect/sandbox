@@ -18,9 +18,6 @@ export abstract class AbstractRenderer {
   protected vao = new VAO();
   protected vbo = new VBO();
 
-  protected abstract vertices: number[];
-  protected abstract normals: number[];
-
   private inited = false;
 
   constructor(protected shader: ShaderProgram) {}

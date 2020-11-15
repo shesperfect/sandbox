@@ -1,5 +1,5 @@
 import {
-  Validate, isColorUnit, isNormalized, leadingZero, NOT_COLOR_UNIT, NOT_NORMALIZED, Vector3,
+  Validate, isColorUnit, isNormalized, NOT_COLOR_UNIT, NOT_NORMALIZED, Vector3,
 } from '@engine/core';
 
 export class Color {
@@ -22,13 +22,13 @@ export class Color {
     return new Color(r, g, b);
   }
 
-  static RGBToHex(r: number, g: number, b: number): number {
-    const res = `${leadingZero((r * 255).toString(16))}${leadingZero((g * 255).toString(16))}${leadingZero((g * 255).toString(16))}`;
-
-    console.log(leadingZero((r * 255).toString(16)));
-
-    return 0;
-  }
+  // static RGBToHex(r: number, g: number, b: number): number {
+  //   const res = `${leadingZero((r * 255).toString(16))}${leadingZero((g * 255).toString(16))}${leadingZero((g * 255).toString(16))}`;
+  //
+  //   console.log(leadingZero((r * 255).toString(16)));
+  //
+  //   return 0;
+  // }
 
   @Validate(isColorUnit, Error(NOT_COLOR_UNIT))
   set red(value: number) { this.array[0] = value / 255; }

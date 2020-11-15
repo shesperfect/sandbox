@@ -5,7 +5,7 @@ export class GeometryBuffer extends DataBuffer {
   private pointer = 0;
 
   constructor(public epi: number, private readonly vertices: number[] = []) {
-    super(1);
+    super(epi);
 
     this.add(vertices);
   }
