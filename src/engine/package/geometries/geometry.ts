@@ -1,5 +1,9 @@
 import { Transformable } from '@engine/core';
 
+export interface GeometryOptions {
+  wireframe?: boolean;
+}
+
 export abstract class Geometry extends Transformable {
   protected _vertices: number[] = [];
   protected _normals: number[] = [];

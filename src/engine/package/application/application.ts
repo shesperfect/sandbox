@@ -1,5 +1,5 @@
 import {
-  Renderer, EventsSystem, InitEvent, SceneSystem, BoxRenderer, LineRenderer,
+  Renderer, EventsSystem, InitEvent, SceneSystem, BoxRenderer, LineRenderer, PlaneRenderer,
 } from '@engine';
 import {
   Container,
@@ -43,6 +43,7 @@ export class Application {
     this.container.register(BoxRenderer, new FactoryProvider(BoxRenderer));
     // this.container.register(ConeRenderer, new FactoryProvider(ConeRenderer));
     this.container.register(LineRenderer, new FactoryProvider(LineRenderer));
+    this.container.register(PlaneRenderer, new FactoryProvider(PlaneRenderer));
 
     // injecting application dependencies
     this.container.inject(this);

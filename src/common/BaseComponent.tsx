@@ -37,7 +37,7 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S> {
   private init(canvas: HTMLCanvasElement | null) {
     if (!canvas) throw new Error('Canvas doesn\'t exist');
 
-    const camera = new PerspectiveCamera(45, canvas.width / canvas.height, 1, 2000);
+    const camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0, 2000);
     camera.transform.position.set(0, 0, 4);
     const controls = new OrbitControls(canvas, camera);
 

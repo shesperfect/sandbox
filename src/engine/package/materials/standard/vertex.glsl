@@ -17,7 +17,7 @@ void main() {
 
     // directional light
     vec3 directionalLightColor = vec3(1, 1, 1);
-    vec3 directionalLightDirection = normalize(vec3(1., 1., 2.));
+    vec3 directionalLightDirection = normalize(vec3(0., 0., 1.));
     vec3 directionalLight = dot(directionalLightDirection, mat3(a_model) * a_normal) * directionalLightColor;
 
     // point light

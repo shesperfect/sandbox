@@ -1,6 +1,5 @@
 import { Entity, LineGeometry } from '@engine/geometries';
 import { BasicMaterial } from '@engine/materials';
-import { Color } from '@engine/core';
 
 export class AxesHelper extends Entity {
   constructor(size = 1) {
